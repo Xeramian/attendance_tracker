@@ -1,0 +1,16 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { Text, View } from "react-native";
+import { SettingsTile } from "./SettingsTile";
+
+export const AcademicSettings = () => {
+    return (
+        <View className="mx-4 flex-col items-start gap-2">
+            <Text className='text-secondary-text text-sm font-lexend-6 select-none'>Academic Settings</Text>
+            <View className="self-stretch flex-col rounded-xl border-light-border border-2 bg-interactive">
+                <SettingsTile icon="analytics"  primaryColor={"#EA580C"} secondaryColor={"#FFF7ED"} value="Attendance Treshold" />
+                <SettingsTile icon="notifications"  primaryColor={"#DB2777"} secondaryColor={"#FDF2F8"} value="Notifications" />
+                <SettingsTile icon="library-books"  primaryColor={"#0D9488"} secondaryColor={"#F0FDFA"} value="Manage Subjects" />
+            </View>
+        </View>
+    );
+}

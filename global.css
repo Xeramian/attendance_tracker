@@ -3,3 +3,46 @@
 @import 'tailwindcss/utilities.css';
 
 @import 'nativewind/theme';
+
+@theme {
+    
+    --font-lexend-1: Lexend-ExtraLight;
+    --font-lexend-2: Lexend-Light;
+    --font-lexend-3: Lexend-Thin;
+    --font-lexend-4: Lexend-Regular;
+    --font-lexend-5: Lexend-Medium;
+    --font-lexend-6: Lexend-SemiBold;
+    --font-lexend-7: Lexend-Bold;
+    --font-lexend-8: Lexend-ExtraBold;
+    --font-lexend-9: Lexend-Black;
+
+
+    --color-primary-text: #111418;
+    --color-secondary-text: #617589;
+    --color-tertiary-text: #374151;
+    --color-quaternary-text: #4B5563;
+    
+    --color-nav: #137FEC;
+
+    --color-urgent: #EA580C;
+    --color-urgent-accent: #FFF7ED;
+
+    --color-interactive: #FFFFFF;
+
+    --color-page: #F7F8F9;
+    --color-page-offset: #E5E7EB;
+    
+    --color-light-border: #F3F4F6;
+
+    --color-ui: #137FEC;
+    --color-ui-accent: #EFF6FF;
+
+    --color-card-primary: #137FEC;
+    --color-card-secondary: #FFFFFF;
+    
+    --color-card-bar-primary: #FFFFFF;
+    --color-card-bar-secondary: #CCCCCC;
+    
+    --color-card-primary-text: #FFFFFF;
+    --color-card-secondary-text: #DBEAFE;
+}
