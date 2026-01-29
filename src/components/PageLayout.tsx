@@ -5,10 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export const PageLayout = ({ children }: { children?: React.ReactNode }) => {
     return (
         <View className='flex-1 bg-page'>
-            <SafeAreaView className="flex-1">
-                <ScrollView showsVerticalScrollIndicator={Platform.OS == 'web'} className="grow" contentContainerClassName="grow">
-                    {children}
-                </ScrollView>
+            <SafeAreaView style={[{flex: 1}]} edges={["top"]}>
+                {children}
             </SafeAreaView>
         </View>
     );

@@ -5,18 +5,20 @@ export const ClassesStatus = () => {
     return (
         <View className='my-2 mx-4 flex flex-col gap-3 items-stretch'>
             <View className='flex flex-row h-7 items-center justify-between select-none'>
-                <Text className='text-primary-text text-lg font-lexend-7'>Next Class</Text>
-                <Text className='text-nav text-sm font-lexend-5'>See all</Text>
+                <Text className='text-primary-text text-lg font-lexend-7 grow'>Next Class</Text>
+                <Text className='text-nav text-sm font-lexend-5 grow text-right'>See all</Text>
             </View>
             <View className='border rounded-xl bg-white border-light-border p-4 flex flex-row justify-between'>
                 <View className='flex flex-col gap-4'>
-                    <View className='flex flex-col gap-2'>
+                    <View className='flex flex-col gap-2 grow'>
                         <View className='flex self-start flex-row gap-1.5 px-2.5 py-1 bg-urgent-accent rounded-full items-center select-none'>
-                            <Text className='text-xs font-lexend-7 text-urgent'>Starts in {15}m</Text>
+                            <Text className='text-xs font-lexend-7 text-urgent pr-.5'>Starts in {15}m</Text>
                             {/* <Text className='text-xs font-lexend-7 text-urgent'>Starts in {14}m{"\u200B"}</Text> */}
                             <MaterialIcons name="timer" color="#EA580C" size={14} />
                         </View>
-                        <Text className='text-primary-text text-xl font-lexend-7'>Advanced Calculus</Text>
+                        <View className="flex flex-row items-center grow px-1">
+                            <Text className='text-primary-text text-xl font-lexend-7 grow'>Advanced Calculus</Text>
+                        </View>
                     </View>
                     <View>
                         <View className='flex flex-row gap-1.5 h-5 items-center'>

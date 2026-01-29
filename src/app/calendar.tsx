@@ -1,9 +1,32 @@
-import { Text, View } from 'react-native';
+import { Calendar } from '@/components/Calendar';
+import { Header } from '@/components/Header';
+import { PageLayout } from '@/components/PageLayout';
+import { ScheduleList } from '@/components/ScheduleList';
+import { useEffect, useRef, useState } from 'react';
+import { View } from 'react-native';
 
 export default function CalendarScreen() {
+    const refCalendar = useRef<View>(null);
+
+    const [maxHeight, setMaxHeight] = useState(0);
+
+    useEffect(() => {
+        refCalendar.current?.measure((x, y, width, height, pageX, pageY) => {
+            setMaxHeight(height);
+        });
+    }, [refCalendar]);
+
+
     return (
-        <View className='flex-1 items-center justify-center'>
-            <Text className='text-8xl text-center'>Hello Calendar!</Text>
-        </View>
+        <PageLayout>
+            {/* Main Header */}
+            <Header heading='Calendar' actions={["filter-list", "more-vert"]} />
+
+            {/* Calendar */}
+            <Calendar ref={refCalendar} />
+
+            {/* Bouncy Schedule */}
+            <ScheduleList maximumTopDisplacement={maxHeight} />
+        </PageLayout>
     );
 }

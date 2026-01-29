@@ -4,15 +4,17 @@ import { LogOutButton } from '@/components/LogOutButton';
 import { PageLayout } from '@/components/PageLayout';
 import { UserInformation } from '@/components/UserInformation';
 import { UserProfile } from '@/components/UserProfile';
-import { View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 export default function ProfileScreen() {
     return (
         <PageLayout>
-            {/* Header */}
-            <Header title='Profile' icon='notifications' />
+            {/* 1. Header is outside. It takes up its natural height. */}
+            <Header heading='Profile' />
 
-            <View className='flex-col gap-8 mb-8'>
+            {/* 2. Wrap the ScrollView in a View with flex: 1.
+               This View acts as the "Anchor" for the ScrollView. */}
+            <ScrollView showsVerticalScrollIndicator={Platform.OS === 'web'} contentContainerClassName='flex flex-col gap-12 py-8'>
                 {/* User Profile */}
                 <UserProfile />
 
@@ -22,8 +24,9 @@ export default function ProfileScreen() {
                 {/* Academic Settings */}
                 <AcademicSettings />
 
+                {/* Log Out Button */}
                 <LogOutButton />
-            </View>
+            </ScrollView>
         </PageLayout>
     );
 }
