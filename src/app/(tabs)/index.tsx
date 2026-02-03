@@ -9,7 +9,7 @@ export default function HomeScreen() {
     return (
         <PageLayout>
             {/* Main Header */}
-            <Header heading='Welcome back, Xeramian!' subheading='Computer Science Major' actions={["notifications"]} />
+            <Header heading='Welcome back, Xeramian!' subheading='Computer Science Major' rightActions={["notifications"]} />
             <ScrollView showsVerticalScrollIndicator={Platform.OS == 'web'} className="grow" contentContainerClassName="grow">
 
                 {/* Attendance Card */}

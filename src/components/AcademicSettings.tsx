@@ -5,7 +5,7 @@ import { SettingsTile } from "./SettingsTile";
 export const AcademicSettings = () => {
     return (
         <View className="mx-4 flex-col items-start gap-2">
-            <Text className='text-secondary-text text-sm font-lexend-6 select-none'>Academic Settings</Text>
+            <Text className='text-secondary-text leading-[16px] text-sm text-fix font-lexend-6 select-none'>Academic Settings</Text>
             <View className="self-stretch flex-col rounded-xl border-light-border border-2 bg-interactive">
                 <SettingsTile icon="analytics"  primaryColor={"#EA580C"} secondaryColor={"#FFF7ED"} value="Attendance Treshold" />
                 <SettingsTile icon="notifications"  primaryColor={"#DB2777"} secondaryColor={"#FDF2F8"} value="Notifications" />

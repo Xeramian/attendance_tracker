@@ -7,9 +7,9 @@ export const AttendanceCard = () => {
             <View className='bg-card-secondary rounded-full absolute size-16 bottom-24 right-16' />
             <View className='bg-card-secondary rounded-full absolute size-32 -bottom-8 -right-10' />
                 <View className='flex flex-col gap-4 z-1'>
-                    <Text className='text-sm font-lexend-5 text-card-secondary-text'>Today's Attendance</Text>
-                    <Text className='text-5xl font-lexend-7 text-card-primary-text'>75%</Text>
-                    <Text className='text-sm font-lexend-5 text-card-secondary-text'>3/4 Classes Attended</Text>
+                    <Text className='leading-[16px] text-sm text-fix font-lexend-5 text-card-secondary-text'>Today's Attendance</Text>
+                    <Text className='text-5xl text-fix font-lexend-7 text-card-primary-text'>75%</Text>
+                    <Text className='leading-[16px] text-sm text-fix font-lexend-5 text-card-secondary-text'>3/4 Classes Attended</Text>
                 </View>
                 <View className='h-2 w-full relative z-1 rounded-full overflow-hidden'>
                     <View className='bg-card-bar-secondary inset-0 rounded-full absolute' />

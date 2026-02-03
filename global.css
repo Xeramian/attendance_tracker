@@ -45,4 +45,35 @@
     
     --color-card-primary-text: #FFFFFF;
     --color-card-secondary-text: #DBEAFE;
+
+
+
+    --color-blue-background: #EFF6FF;
+    --color-blue: #2563EB;
+    --color-purple-background: #FAF5FF;
+    --color-purple: #9333EA;
+    --color-green-background: #F0FDF4;
+    --color-green: #16A34A;
+    --color-orange-background: #FFF7ED;
+    --color-orange: #EA580C;
+    --color-pink-background: #FDF2F8;
+    --color-pink: #DB2777;
+    --color-cyan-background: #F0FDFA;
+    --color-cyan: #0D9488;
+    --color-red-background: #FEF2F2;
+    --color-red: #EF4444;
+    --color-yellow-background: #FEFCE8;
+    --color-yellow: #CA8A04;
+
+    --color-danger-background: #FEE2E2;
+    --color-danger: #B91C1C;
+    --color-success-background: #DCFCE7;
+    --color-success: #15803D;
+
+
+}
+
+@utility text-fix {
+  /* NativeWind translates these to React Native specific styles */
+  include-font-padding: false;
 }

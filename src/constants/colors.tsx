@@ -1,0 +1,23 @@
+export const colors = {
+    "blue_background": "#EFF6FF",
+    "blue": "#137FEC",
+    "purple_background": "#FAF5FF",
+    "purple": "#9333EA",
+    "green_background": "#F0FDF4",
+    "green": "#16A34A",
+    "orange_background": "#FFF7ED",
+    "orange": "#EA580C",
+    "pink_background": "#FDF2F8",
+    "pink": "#DB2777",
+    "cyan_background": "#F0FDFA",
+    "cyan": "#0D9488",
+    "red_background": "#FEF2F2",
+    "red": "#EF4444",
+    "yellow_background": "#FEFCE8",
+    "yellow": "#CA8A04",
+
+    "danger_background": "#FEE2E2",
+    "danger": "#B91C1C",
+    "success_background": "#DCFCE7",
+    "success": "#15803D"
+}

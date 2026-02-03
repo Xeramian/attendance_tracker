@@ -7,11 +7,12 @@ export const SettingsTile = ({ icon, primaryColor, secondaryColor, value }: { ic
             <View style={{ alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: 8, backgroundColor: secondaryColor }}>
                 <MaterialIcons name={icon} size={24} color={primaryColor} />
             </View>
-            <View className="flex flex-col items-center select-none">
-                <Text className='text-primary-text text-[16px] font-lexend-5'>{value}</Text>
+            <View className="flex flex-row items-center select-none flex-1 justify-start">
+                <Text className='text-primary-text leading-[18px] text-[16px] text-fix font-lexend-5'>{value}</Text>
             </View>
-            <View className="flex-1" />
-            <MaterialIcons name="chevron-right" size={20} color={"#9CA3AF"} />
+            <View className="size-5 flex items-center justify-center">
+                <MaterialIcons name="chevron-right" size={20} color={"#9CA3AF"} />
+            </View>
         </View>
    );
 }

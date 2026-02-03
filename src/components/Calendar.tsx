@@ -21,20 +21,20 @@ export const Calendar = forwardRef<View>((_, ref) => {
                     <MaterialIcons name="chevron-left" size={20} color="#111418" />
                 </View>
                 <View className="flex-5 flex items-center justify-center">
-                    <Text className="font-lexend-7 text-lg text-center text-primary-text">October 2023</Text>
+                    <Text className="text-fix font-lexend-7 leading-[20px] text-lg text-center text-primary-text">October 2023</Text>
                 </View>
                 <View className="flex-1 flex items-center justify-center">
                     <MaterialIcons name="chevron-right" size={20} color="#111418" className="flex-1" />
                 </View>
             </View>
             <View className="flex flex-row items-center justify-around">
-                <Text className="font-lexend-6 text-xs text-[#637588]">S</Text>
-                <Text className="font-lexend-6 text-xs text-[#637588]">M</Text>
-                <Text className="font-lexend-6 text-xs text-[#637588]">T</Text>
-                <Text className="font-lexend-6 text-xs text-[#637588]">W</Text>
-                <Text className="font-lexend-6 text-xs text-[#637588]">T</Text>
-                <Text className="font-lexend-6 text-xs text-[#637588]">F</Text>
-                <Text className="font-lexend-6 text-xs text-[#637588]">S</Text>
+                <Text className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">S</Text>
+                <Text className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">M</Text>
+                <Text className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">T</Text>
+                <Text className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">W</Text>
+                <Text className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">T</Text>
+                <Text className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">F</Text>
+                <Text className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">S</Text>
             </View>
             <View className="py-4">
                 <FlatList data={Array.from({length: 31}, (_, i) => i + 1)} renderItem={ (item) => DayBox(item) } numColumns={7} />
