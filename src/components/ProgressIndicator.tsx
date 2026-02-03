@@ -1,6 +1,7 @@
+import { AppText } from '@/components/AppText';
 import { useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, { Easing, useAnimatedProps, useSharedValue, withTiming } from "react-native-reanimated";
 import Svg, { Circle } from "react-native-svg";
 
@@ -66,13 +67,13 @@ export const ProgressIndicator = ({ size, progress, topText, bottomText }: { siz
             </View>
             <View className='absolute inset-0 items-center justify-center flex flex-col'>
                 <View>
-                    <Text className="text-quaternary-text text-fix font-lexend-7 leading-[24px] text-xl">{topText}</Text>
+                    <AppText className="text-quaternary-text text-fix font-lexend-7 leading-[24px] text-xl">{topText}</AppText>
                 </View>
                 <View>
-                    <Text className='text-primary-text text-5xl text-fix font-lexend-7'>{progress}%</Text>
+                    <AppText className='text-primary-text text-5xl text-fix font-lexend-7'>{progress}%</AppText>
                 </View>
                 <View>
-                    <Text className="text-secondary-text text-fix font-lexend-6 leading-[16px] text-sm">{bottomText}</Text>
+                    <AppText className="text-secondary-text text-fix font-lexend-6 leading-[16px] text-sm">{bottomText}</AppText>
                 </View>
             </View>
         </View>

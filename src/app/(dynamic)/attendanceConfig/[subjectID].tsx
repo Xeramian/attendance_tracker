@@ -1,4 +1,6 @@
 // app/stats/[subjectId].tsx
+import * as Haptics from 'expo-haptics';
+import { AppText } from '@/components/AppText';
 import { AttendanceHistory } from '@/components/AttendanceHistory';
 import { Header } from '@/components/Header';
 import { PageLayout } from '@/components/PageLayout';
@@ -8,13 +10,13 @@ import { colors } from '@/constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { LayoutChangeEvent, Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { LayoutChangeEvent, Platform, Pressable, ScrollView, View } from 'react-native';
 import { Gesture, GestureDetector, TextInput } from 'react-native-gesture-handler';
 import { PanGesture } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture';
 import Animated, { clamp, useAnimatedProps, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { runOnRuntime, scheduleOnRN } from 'react-native-worklets';
 
-const AnimatedText = Animated.createAnimatedComponent(Text);
+const AnimatedText = Animated.createAnimatedComponent(AppText);
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 export default function SubjectDetail() {
@@ -25,17 +27,23 @@ export default function SubjectDetail() {
     const width = useSharedValue(0); // Memory for where the drag started
     // const widthText = useSharedValue(0); // Memory for where the drag started
 
-    const [targetValue, setTargetValue] = useState(target.value);
+    const [targetValue, setTargetValue] = useState(75);
+
+    const updateState = (val: number) => {
+        setTargetValue(val);
+        Haptics.selectionAsync();
+    }
 
     const pan = Gesture.Pan()
         .onStart((event) => {
             context.value = target.value;
         })
         .onUpdate((event) => {
-            target.value = clamp(context.value + 100*(event.translationX / width.value), 0, 100);
-            scheduleOnRN(() => {
-                setTargetValue(Math.round(target.value));
-            })
+            const newValue = clamp(context.value + 100*(event.translationX / width.value), 0, 100);
+            if (Math.round(newValue) != Math.round(target.value)) {
+                target.value = Math.round(newValue);
+                scheduleOnRN(updateState, Math.round(newValue));
+            }
         })
 
     const animatedStyle = useAnimatedStyle(() => {
@@ -52,7 +60,6 @@ export default function SubjectDetail() {
 
     const onLayout = (event: LayoutChangeEvent) => {
         width.value = event.nativeEvent.layout.width;
-        console.log(event.nativeEvent.layout.width);
     };
 
     // const onLayoutText = (event: LayoutChangeEvent) => {
@@ -64,11 +71,11 @@ export default function SubjectDetail() {
             <Header heading={"Set Target"} centerHeading={true} leftActions={[{icon: "chevron-left", fn: () => { router.back() }}]} />
             <View className='flex flex-col py-4 gap-4 px-12'>
                 <View className='flex flex-row gap-1 justify-center p-4'>
-                    <Text className='text-primary-text text-3xl text-fix font-lexend-7'>Target Attendance</Text>
+                    <AppText className='text-primary-text text-3xl text-fix font-lexend-7'>Target Attendance</AppText>
                 </View>
                 <View className='flex flex-row gap-1 justify-center p-4'>
                     <View className='flex-row'>
-                        <Text className='text-primary-text text-7xl text-fix font-lexend-7'>{targetValue}%</Text>
+                        <AppText className='text-primary-text text-7xl text-fix font-lexend-7'>{targetValue}%</AppText>
                     </View>
                 </View>
                 <View onLayout={onLayout} className='self-stretch h-2 relative rounded-full items-center justify-center'>
@@ -79,25 +86,27 @@ export default function SubjectDetail() {
                     </GestureDetector>
                 </View>
                 <View className='flex flex-row items-center justify-between'>
-                    <Text className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center -translate-x-6'>0%</Text>
-                    <Text className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center -translate-x-4'>25%</Text>
-                    <Text className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center'>50%</Text>
-                    <Text className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center translate-x-4'>75%</Text>
-                    <Text className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center translate-x-6'>100%</Text>
+                    <AppText className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center -translate-x-5'>0%</AppText>
+                    <AppText className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center -translate-x-2'>25%</AppText>
+                    <AppText className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center translate-x-1'>50%</AppText>
+                    <AppText className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center translate-x-3'>75%</AppText>
+                    <AppText className='text-fix font-lexend-5 font-[14px] text-secondary-text w-12 text-center translate-x-8'>100%</AppText>
                 </View>
             </View>
-            <View className='py-8 rounded-xl bg-[#FFFFFF] p-4 flex flex-row gap-4 m-8'>
+            <View className='rounded-xl bg-[#FFFFFF] p-4 flex flex-row gap-4 m-8'>
                 <View className='rounded-lg size-10 items-center justify-center bg-blue-background'>
                     <MaterialIcons name="info" size={24} color={colors.blue} />
                 </View>
-                <View className='flex flex-col flex-1'>
-                    <Text className='text-primary-text leading-[18px] text-[16px] text-fix font-lexend-7'>How this works</Text>
-                    <Text className='font-lexend-4 text-fix font-[14px] text-secondary-text'>This threshold determines when you receive 'At Risk' alerts. Set this to your university's minimum requirement.</Text>
+                <View className='flex flex-col flex-1 items-stretch justify-start'>
+                    <View>
+                        <AppText className='text-primary-text leading-[18px] text-[16px] text-fix font-lexend-7'>How this works</AppText>
+                    </View>
+                    <AppText className='font-lexend-4 text-fix font-[14px] text-secondary-text'>This threshold determines when you receive 'At Risk' alerts. Set this to your university's minimum requirement.</AppText>
                 </View>
             </View>
             <View className='flex-1' />
-            <Pressable onPress={() => {router.back()}} className='py-8 rounded-xl bg-[#137FEC] items-center justify-center p-4 flex flex-row gap-4 m-8'>
-                <Text className='text-[#FFFFFF] leading-[18px] text-[16px] text-fix font-lexend-7'>Save Preferences</Text>
+            <Pressable onPress={() => {router.back()}} className='rounded-xl bg-[#137FEC] items-center justify-center p-4 flex flex-row gap-4 m-8'>
+                <AppText className='text-[#FFFFFF] leading-[18px] text-[16px] text-fix font-lexend-7'>Save Preferences</AppText>
             </Pressable>
         </PageLayout>
     );

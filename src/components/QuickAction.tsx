@@ -1,5 +1,6 @@
+import { AppText } from '@/components/AppText';
 import { MaterialIcons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export const QuickAction = ({ icon, actionText }: { icon: MaterialIconName, actionText: string }) => {
     return (
@@ -8,7 +9,7 @@ export const QuickAction = ({ icon, actionText }: { icon: MaterialIconName, acti
                 <MaterialIcons name={icon} color="#137FEC" size={30} />
             </View>
             <View className="items-center justify-center">
-                <Text className='text-tertiary-text text-xs text-fix font-lexend-5 text-center'>{actionText}</Text>
+                <AppText className='text-tertiary-text text-xs text-fix font-lexend-5 text-center'>{actionText}</AppText>
             </View>
         </View>
     );

@@ -1,8 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ref, RefObject, useEffect, useRef, useState } from "react";
-import { Platform, Pressable, Text, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { clamp, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { AppText } from "./AppText";
 
 export const ScheduleList = ({maximumTopDisplacement}: {maximumTopDisplacement?: number}) => {
 
@@ -34,8 +35,8 @@ export const ScheduleList = ({maximumTopDisplacement}: {maximumTopDisplacement?:
                 <View className="w-12 h-2 rounded-full bg-page-offset self-center" />
                 <View className="flex flex-row px-5 py-4 justify-between self-stretch">
                     <View className="flex flex-col gap-0.5">
-                        <Text className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Oct 24, Tue</Text>
-                        <Text className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">3 Classes • 1 Absent</Text>
+                        <AppText className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Oct 24, Tue</AppText>
+                        <AppText className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">3 Classes • 1 Absent</AppText>
                     </View>
                     <View className="self-stretch items-center justify-center size-10 bg-ui-accent rounded-full">
                         <MaterialIcons name="calendar-today" size={20} color={'#137FEC'} />
@@ -45,14 +46,14 @@ export const ScheduleList = ({maximumTopDisplacement}: {maximumTopDisplacement?:
                     <View className="w-full h-16 gap-3 flex flex-row">
                         <View className="flex flex-row gap-4">
                             <View className="w-12 flex flex-col items-center justify-center">
-                            <Text className="text-[#6B7280] text-fix font-lexend-6 leading-[14px] text-xs">09:00</Text>
+                            <AppText className="text-[#6B7280] text-fix font-lexend-6 leading-[14px] text-xs">09:00</AppText>
                             </View>
                         </View>
                         <View className="grow border-2 border-light-border flex flex-row items-center p-3 rounded-xl">
                             <View className="flex flex-row flex-1">
                                 <View className="flex flex-col">
-                                    <Text className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Mathematics</Text>
-                                    <Text className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">Room 301</Text>
+                                    <AppText className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Mathematics</AppText>
+                                    <AppText className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">Room 301</AppText>
                                 </View>
                             </View>
                             <View className="flex flex-row items-center justify-center size-8 rounded-full bg-[#DCFCE7]">
@@ -63,14 +64,14 @@ export const ScheduleList = ({maximumTopDisplacement}: {maximumTopDisplacement?:
                     <View className="w-full h-16 gap-3 flex flex-row">
                         <View className="flex flex-row gap-4">
                             <View className="w-12 flex flex-col items-center justify-center">
-                            <Text className="text-[#6B7280] text-fix font-lexend-6 leading-[14px] text-xs">11:00</Text>
+                            <AppText className="text-[#6B7280] text-fix font-lexend-6 leading-[14px] text-xs">11:00</AppText>
                             </View>
                         </View>
                         <View className="grow border-2 border-light-border flex flex-row items-center p-3 rounded-xl">
                             <View className="flex flex-row flex-1">
                                 <View className="flex flex-col">
-                                    <Text className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Physics{"\u00A0"}</Text>
-                                    <Text className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">Room 301</Text>
+                                    <AppText className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Physics{"\u00A0"}</AppText>
+                                    <AppText className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">Room 301</AppText>
                                 </View>
                             </View>
                             <View className="flex flex-row items-center justify-center size-8 rounded-full bg-[#FEE2E2]">
@@ -81,14 +82,14 @@ export const ScheduleList = ({maximumTopDisplacement}: {maximumTopDisplacement?:
                     <View className="w-full h-16 gap-3 flex flex-row">
                         <View className="flex flex-row gap-4">
                             <View className="w-12 flex flex-col items-center justify-center">
-                            <Text className="text-[#6B7280] text-fix font-lexend-6 leading-[14px] text-xs">02:00</Text>
+                            <AppText className="text-[#6B7280] text-fix font-lexend-6 leading-[14px] text-xs">02:00</AppText>
                             </View>
                         </View>
                         <View className="grow border-2 border-light-border flex flex-row items-center p-3 rounded-xl">
                             <View className="flex flex-row flex-1">
                                 <View className="flex flex-col">
-                                    <Text className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Literature</Text>
-                                    <Text className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">Cancelled</Text>
+                                    <AppText className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Literature</AppText>
+                                    <AppText className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">Cancelled</AppText>
                                 </View>
                             </View>
                             <View className="flex flex-row items-center justify-center size-8 rounded-full bg-[#E5E7EB]">

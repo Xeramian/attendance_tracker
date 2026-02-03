@@ -1,5 +1,6 @@
+import { AppText } from '@/components/AppText';
 import { MaterialIcons } from "@expo/vector-icons"
-import { Pressable, Text, View } from "react-native"
+import { Pressable, View } from "react-native"
 
 export const Header = ({ heading, centerHeading, subheading, leftActions, rightActions }: { heading?: string, centerHeading?: boolean, subheading?: string, leftActions?: Array<{icon: MaterialIconName, fn?: () => void}>, rightActions?: Array<MaterialIconName> }) => {
     return (
@@ -9,8 +10,8 @@ export const Header = ({ heading, centerHeading, subheading, leftActions, rightA
             </View>
 
             <View className={`flex flex-col gap-1 flex-1 -z-1 ${(centerHeading??false)?'absolute inset-0 items-center justify-center':''}`}>
-                { heading && <Text className='text-primary-text text-2xl text-fix font-lexend-7 px-0.5'>{heading}</Text> }
-                { subheading && <Text className='text-secondary-text leading-[16px] text-sm text-fix font-lexend px-0.5'>{subheading}</Text> }
+                { heading && <AppText className='text-primary-text text-2xl text-fix font-lexend-7 px-0.5'>{heading}</AppText> }
+                { subheading && <AppText className='text-secondary-text leading-[16px] text-sm text-fix font-lexend px-0.5'>{subheading}</AppText> }
             </View>
 
             <View className="flex flex-row gap-6">

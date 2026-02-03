@@ -1,5 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { ColorValue, Text, View } from "react-native";
+import { ColorValue, View } from "react-native";
+import { AppText } from "./AppText";
 
 export const SettingsTile = ({ icon, primaryColor, secondaryColor, value }: { icon: MaterialIconName, primaryColor: ColorValue, secondaryColor: ColorValue, value: string }) => {
     return (
@@ -8,7 +9,7 @@ export const SettingsTile = ({ icon, primaryColor, secondaryColor, value }: { ic
                 <MaterialIcons name={icon} size={24} color={primaryColor} />
             </View>
             <View className="flex flex-row items-center select-none flex-1 justify-start">
-                <Text className='text-primary-text leading-[18px] text-[16px] text-fix font-lexend-5'>{value}</Text>
+                <AppText className='text-primary-text leading-[18px] text-[16px] text-fix font-lexend-5'>{value}</AppText>
             </View>
             <View className="size-5 flex items-center justify-center">
                 <MaterialIcons name="chevron-right" size={20} color={"#9CA3AF"} />

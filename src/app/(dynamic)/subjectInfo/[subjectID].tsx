@@ -1,4 +1,5 @@
 // app/stats/[subjectId].tsx
+import { AppText } from '@/components/AppText';
 import { AttendanceHistory } from '@/components/AttendanceHistory';
 import { Header } from '@/components/Header';
 import { PageLayout } from '@/components/PageLayout';
@@ -7,7 +8,7 @@ import { AttendanceType } from '@/constants/attendance';
 import { colors } from '@/constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { Platform, Pressable, ScrollView, View } from 'react-native';
 
 export default function SubjectDetail() {
     const { subjectID } = useLocalSearchParams<{ subjectID: string }>();
@@ -19,22 +20,22 @@ export default function SubjectDetail() {
                     <ProgressIndicator size={180} bottomText={"Attendance"} progress={75} />
                     <Pressable onPress={() => {router.navigate(`/attendanceConfig/${subjectID}`);}} className='bg-blue-background rounded-full flex items-center justify-center flex-row self-center px-4 py-2'>
                         <MaterialIcons name="edit-note" size={20} color={colors.blue} />
-                        <Text className='text-fix font-lexend-7 text-blue text-[14px]'>Target</Text>
+                        <AppText className='text-fix font-lexend-7 text-blue text-[14px]'>Target</AppText>
                     </Pressable>
                     <View className='flex flex-row gap-1 justify-center'>
                         <View className='flex flex-col gap-1 items-center w-24'>
-                            <Text className="text-secondary-text text-fix font-lexend-5 leading-[16px] text-sm">TOTAL</Text>
-                            <Text className='text-primary-text leading-[24px] text-xl text-fix font-lexend-7'>20</Text>
+                            <AppText className="text-secondary-text text-fix font-lexend-5 leading-[16px] text-sm">TOTAL</AppText>
+                            <AppText className='text-primary-text leading-[24px] text-xl text-fix font-lexend-7'>20</AppText>
                         </View>
                         <View className='h-full w-0.5 rounded-full bg-[#F3F4F6]' />
                         <View className='flex flex-col gap-1 items-center w-24'>
-                            <Text className="text-blue text-fix font-lexend-5 leading-[16px] text-sm">ATTENDED</Text>
-                            <Text className='text-blue leading-[24px] text-xl text-fix font-lexend-7'>17</Text>
+                            <AppText className="text-blue text-fix font-lexend-5 leading-[16px] text-sm">ATTENDED</AppText>
+                            <AppText className='text-blue leading-[24px] text-xl text-fix font-lexend-7'>17</AppText>
                         </View>
                         <View className='h-full w-0.5 rounded-full bg-[#F3F4F6]' />
                         <View className='flex flex-col gap-1 items-center w-24'>
-                            <Text className="text-red text-fix font-lexend-5 leading-[16px] text-sm">ABSENT</Text>
-                            <Text className='text-red leading-[24px] text-xl text-fix font-lexend-7'>3</Text>
+                            <AppText className="text-red text-fix font-lexend-5 leading-[16px] text-sm">ABSENT</AppText>
+                            <AppText className='text-red leading-[24px] text-xl text-fix font-lexend-7'>3</AppText>
                         </View>
                     </View>
                 </View>

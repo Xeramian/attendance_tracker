@@ -4,7 +4,7 @@ import { PageLayout } from '@/components/PageLayout';
 import { ProgressIndicator } from '@/components/ProgressIndicator';
 import { SubjectBreakdown } from '@/components/SubjectBreakdown';
 import { colors } from '@/constants/colors';
-import { Platform, ScrollView, Text, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 export default function StatsScreen() {
     return (

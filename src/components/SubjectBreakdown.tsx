@@ -1,8 +1,9 @@
+import { AppText } from '@/components/AppText';
 import { colors } from "@/constants/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { ColorValue, Text, View } from "react-native";
+import { ColorValue, View } from "react-native";
 import Animated, { GentleSpringConfigWithDuration, useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
 export const SubjectBreakdown = ({ subjects }: { subjects: Array<{ "name": string, "pass_critertia": number, "color": ColorValue, "bg_color": ColorValue, "icon": MaterialIconName, "attended_no_classes": number, "total_no_classes": number }> }) => {
@@ -10,10 +11,10 @@ export const SubjectBreakdown = ({ subjects }: { subjects: Array<{ "name": strin
         <View className="flex flex-col gap-6">
             <View className="flex flex-row justify-between px-4">
                 <View>
-                    <Text className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Subject Breakdown{"\u200B"}</Text>
+                    <AppText className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Subject Breakdown{"\u200B"}</AppText>
                 </View>
                 {/* <View>
-                    <Text className="text-ui text-fix font-lexend-4 leading-[16px] text-sm">View All{"\u200B"}</Text>
+                    <AppText className="text-ui text-fix font-lexend-4 leading-[16px] text-sm">View All{"\u200B"}</AppText>
                 </View> */}
             </View>
             <View className="gap-4 px-4">
@@ -25,11 +26,11 @@ export const SubjectBreakdown = ({ subjects }: { subjects: Array<{ "name": strin
                             <MaterialIcons name={"functions"} size={24} color={colors.green} />
                         </View>
                         <View className="flex flex-col flex-1">
-                            <Text className="text-primary-text text-fix font-lexend-7 leading-[18px] text-[16px]">Maths 101</Text>
-                            <Text className="text-secondary-text text-fix font-lexend-4 leading-[14px] text-xs">16/32 Classes</Text>
+                            <AppText className="text-primary-text text-fix font-lexend-7 leading-[18px] text-[16px]">Maths 101</AppText>
+                            <AppText className="text-secondary-text text-fix font-lexend-4 leading-[14px] text-xs">16/32 Classes</AppText>
                         </View>
                         <View className="self-center px-2.5 py-1 items-center justify-center bg-danger-background rounded-full">
-                            <Text className="text-fix font-lexend-7 leading-[14px] text-xs text-danger">At Risk</Text>
+                            <AppText className="text-fix font-lexend-7 leading-[14px] text-xs text-danger">At Risk</AppText>
                         </View>
                     </View>
                     <View className="flex flex-row items-center gap-3 h-5">
@@ -75,16 +76,16 @@ const InduvidualSubjectInfo = ({ subject }: { subject: { "name": string, "pass_c
                     <MaterialIcons name={subject.icon} size={24} color={subject.color} />
                 </View>
                 <View className="flex flex-col flex-1">
-                    <Text className="text-primary-text text-fix font-lexend-7 leading-[18px] text-[16px]">{subject.name}{"\u200B"}</Text>
-                    <Text className="text-secondary-text text-fix font-lexend-4 leading-[14px] text-xs">{subject.attended_no_classes.toString()}/{subject.total_no_classes.toString()} Classes{"\u200B"}</Text>
+                    <AppText className="text-primary-text text-fix font-lexend-7 leading-[18px] text-[16px]">{subject.name}{"\u200B"}</AppText>
+                    <AppText className="text-secondary-text text-fix font-lexend-4 leading-[14px] text-xs">{subject.attended_no_classes.toString()}/{subject.total_no_classes.toString()} Classes{"\u200B"}</AppText>
                 </View>
                 { (subject.attended_no_classes / subject.total_no_classes) * 100 >= subject.pass_critertia ? 
                     <View className="self-center px-2.5 py-1 items-center justify-center bg-success-background rounded-full">
-                        <Text className="text-fix font-lexend-7 leading-[14px] text-xs text-success">Safe{"\u200B"}</Text>
+                        <AppText className="text-fix font-lexend-7 leading-[14px] text-xs text-success">Safe{"\u200B"}</AppText>
                     </View>
                     :
                     <View className="self-center px-2.5 py-1 items-center justify-center bg-danger-background rounded-full">
-                        <Text className="text-fix font-lexend-7 leading-[14px] text-xs text-danger">At Risk{"\u200B"}</Text>
+                        <AppText className="text-fix font-lexend-7 leading-[14px] text-xs text-danger">At Risk{"\u200B"}</AppText>
                     </View>
                 }
             </View>
@@ -101,11 +102,11 @@ const InduvidualSubjectInfo = ({ subject }: { subject: { "name": string, "pass_c
                 </View>
                 { (subject.attended_no_classes / subject.total_no_classes) * 100 >= subject.pass_critertia ? 
                     <View className="self-center items-center justify-center">
-                        <Text className="text-fix font-lexend-7 leading-[14px] text-xs text-success">{((subject.attended_no_classes / subject.total_no_classes) * 100).toFixed(2)}%{"\u200B"}</Text>
+                        <AppText className="text-fix font-lexend-7 leading-[14px] text-xs text-success">{((subject.attended_no_classes / subject.total_no_classes) * 100).toFixed(2)}%{"\u200B"}</AppText>
                     </View>
                     :
                     <View className="self-center items-center justify-center">
-                        <Text className="text-fix font-lexend-7 leading-[14px] text-xs text-danger">{((subject.attended_no_classes / subject.total_no_classes) * 100).toFixed(2)}%{"\u200B"}</Text>
+                        <AppText className="text-fix font-lexend-7 leading-[14px] text-xs text-danger">{((subject.attended_no_classes / subject.total_no_classes) * 100).toFixed(2)}%{"\u200B"}</AppText>
                     </View>
                 }
             </View>

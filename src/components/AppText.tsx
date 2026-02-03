@@ -10,7 +10,6 @@ export const AppText = ({ children, ...props }: TextProps) => {
   return (
     <Text 
       {...props} 
-      // 2. Project-wide Android Fix: Disable native padding
       textBreakStrategy='simple'
     >
       {processedChildren}
