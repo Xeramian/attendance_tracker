@@ -2,7 +2,7 @@ import { AppText } from '@/components/AppText';
 import { MaterialIcons } from "@expo/vector-icons"
 import { Pressable, View } from "react-native"
 
-export const Header = ({ heading, centerHeading, subheading, leftActions, rightActions }: { heading?: string, centerHeading?: boolean, subheading?: string, leftActions?: Array<{icon: MaterialIconName, fn?: () => void}>, rightActions?: Array<MaterialIconName> }) => {
+export const Header = ({ heading, centerHeading, subheading, leftActions, rightActions }: { heading?: string, centerHeading?: boolean, subheading?: string, leftActions?: Array<{icon: MaterialIconName, fn?: () => void}>, rightActions?: Array<{icon: MaterialIconName, fn?: () => void}> }) => {
     return (
         <View className='h-25 p-4 flex flex-row items-center justify-between border-b-2 border-light-border select-none z-1 bg-page'>
             <View className="flex flex-row gap-6">
@@ -15,8 +15,9 @@ export const Header = ({ heading, centerHeading, subheading, leftActions, rightA
             </View>
 
             <View className="flex flex-row gap-6">
-                { rightActions?.map((icon, i) => <MaterialIcons key={i} name={icon} size={24} color={"#000000"} />) }
+                { rightActions?.map(({icon, fn}, i) => <Pressable hitSlop={20} key={i} onPress={() => {fn?.()}}><MaterialIcons name={icon} size={24} color={"#000000"} /></Pressable>) }
             </View>
+
         </View>
     )
 }

@@ -64,9 +64,7 @@ const AttendanceItem = ({ item }: { item: { time: Date, status: AttendanceType }
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
-            transform: [{
-                translateX: withSpring(`${100*status}%`)
-            }]
+            left: withSpring(4 + 72*status)
         };
     });
 
@@ -81,11 +79,11 @@ const AttendanceItem = ({ item }: { item: { time: Date, status: AttendanceType }
                     <AppText className='text-secondary-text leading-[16px] text-sm text-fix font-lexend-4 select-none'>10:00 AM • Lecture 12</AppText>
                 </View>
             </View>
-            <View className="bg-light-border h-10 rounded-lg flex flex-row items-center p-1">
-                <Animated.View style={[{position: 'absolute', width: 72, left: 4, top: 4, bottom: 4, backgroundColor: '#FFFFFF', borderRadius: 4}, animatedStyle]} />
+            <View className="bg-light-border h-10 rounded-lg flex flex-row items-center py-1">
+                <Animated.View style={[{position: 'absolute', width: 72, top: 4, bottom: 4, backgroundColor: '#FFFFFF', borderRadius: 4}, animatedStyle]} />
                 { AttendanceTypes.map((curr_status, index) => 
                     <Pressable key={index} onPress={() => {setStatus(curr_status);}} style={{ position: 'absolute', top: 4, bottom: 4, left: 4 + curr_status * 72, alignItems: 'center', justifyContent: 'center', width: 72 }}>
-                        <AppText textBreakStrategy="simple" className={`text-fix text-center leading-[40px] text-xs ${curr_status == status ? `${colorClasses[curr_status]} font-lexend-7 ` : 'text-[#64748B] font-lexend-5'}`}>{AttendanceType[curr_status]}</AppText>
+                        <AppText textBreakStrategy="simple" className={`text-fix text-center text-xs ${curr_status == status ? `${colorClasses[curr_status]} font-lexend-7 ` : 'text-[#64748B] font-lexend-5'}`}> {AttendanceType[curr_status]} </AppText>
                     </Pressable>
                 ) }
             </View>

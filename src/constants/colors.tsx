@@ -19,5 +19,12 @@ export const colors = {
     "danger_background": "#FEE2E2",
     "danger": "#B91C1C",
     "success_background": "#DCFCE7",
-    "success": "#15803D"
+    "success": "#15803D",
+
+    "subject_blue": "#3B82F6",
+    "subject_green": "#22C55E",
+    "subject_purple": "#A855F7",
+    "subject_orange": "#F97316",
+    "subject_pink": "#EC4899",
+    "subject_gray": "#6B7280",
 }

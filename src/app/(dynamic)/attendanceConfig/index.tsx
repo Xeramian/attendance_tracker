@@ -1,28 +1,18 @@
-// app/stats/[subjectId].tsx
 import * as Haptics from 'expo-haptics';
 import { AppText } from '@/components/AppText';
-import { AttendanceHistory } from '@/components/AttendanceHistory';
 import { Header } from '@/components/Header';
 import { PageLayout } from '@/components/PageLayout';
-import { ProgressIndicator } from '@/components/ProgressIndicator';
-import { AttendanceType } from '@/constants/attendance';
 import { colors } from '@/constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
-import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
-import { LayoutChangeEvent, Platform, Pressable, ScrollView, View } from 'react-native';
-import { Gesture, GestureDetector, TextInput } from 'react-native-gesture-handler';
-import { PanGesture } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture';
-import Animated, { clamp, useAnimatedProps, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { runOnRuntime, scheduleOnRN } from 'react-native-worklets';
+import { LayoutChangeEvent, Pressable, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { clamp, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { actions } from '@/constants/actions';
 
-const AnimatedText = Animated.createAnimatedComponent(AppText);
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-
 export default function AttendanceDetailsScreen() {
-    const { subjectID } = useLocalSearchParams<{ subjectID: string }>();
-
     const target = useSharedValue(75);
     const context = useSharedValue(0); // Memory for where the drag started
     const width = useSharedValue(0); // Memory for where the drag started

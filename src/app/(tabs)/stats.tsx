@@ -3,13 +3,14 @@ import { ItemSelector } from '@/components/ItemSelector';
 import { PageLayout } from '@/components/PageLayout';
 import { ProgressIndicator } from '@/components/ProgressIndicator';
 import { SubjectBreakdown } from '@/components/SubjectBreakdown';
+import { actions } from '@/constants/actions';
 import { colors } from '@/constants/colors';
 import { Platform, ScrollView, View } from 'react-native';
 
 export default function StatsScreen() {
     return (
         <PageLayout>
-            <Header heading={"Attendance Analytics"} rightActions={["notifications"]} />
+            <Header heading={"Attendance Analytics"} rightActions={[actions.notification]} />
             <View className='p-4'>
                 <ItemSelector items={["Weekly", "Monthly"]} onSelect={(item) => {console.log(item)}} />
             </View>

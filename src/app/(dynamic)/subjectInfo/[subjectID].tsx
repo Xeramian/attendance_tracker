@@ -4,20 +4,21 @@ import { AttendanceHistory } from '@/components/AttendanceHistory';
 import { Header } from '@/components/Header';
 import { PageLayout } from '@/components/PageLayout';
 import { ProgressIndicator } from '@/components/ProgressIndicator';
+import { actions } from '@/constants/actions';
 import { AttendanceType } from '@/constants/attendance';
 import { colors } from '@/constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { Platform, Pressable, ScrollView, View } from 'react-native';
 
-export default function SubjectDetail() {
+export default function SubjectDetailScreen() {
     const { subjectID } = useLocalSearchParams<{ subjectID: string }>();
     return (
         <PageLayout>
-            <Header heading={subjectID} centerHeading={true} leftActions={[{icon: "chevron-left", fn: () => { router.back() }}]} />
+            <Header heading={subjectID} centerHeading={true} leftActions={[actions.back]} />
             <ScrollView showsVerticalScrollIndicator={Platform.OS == 'web'} className="grow flex flex-col" contentContainerClassName="grow pb-16">
                 <View className='m-4 p-6 gap-6 flex flex-col bg-[#FFFFFF] rounded-xl'>
-                    <ProgressIndicator size={180} bottomText={"Attendance"} progress={75} />
+                    <ProgressIndicator size={160} bottomText={"Attendance"} progress={75} />
                     <Pressable onPress={() => {router.navigate(`/attendanceConfig/${subjectID}`);}} className='bg-blue-background rounded-full flex items-center justify-center flex-row self-center px-4 py-2'>
                         <MaterialIcons name="edit-note" size={20} color={colors.blue} />
                         <AppText className='text-fix font-lexend-7 text-blue text-[14px]'>Target</AppText>

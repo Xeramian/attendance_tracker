@@ -5,11 +5,15 @@ import { AppText } from "./AppText";
 
 const DayBox = (item: ListRenderItemInfo<number>) => {
     return (
-        <View className="h-15 w-[14.28%] flex flex-col items-center justify-start gap-1">
-            <View className="pt-1">
-                <AppText className="text-center">{item.item}</AppText>
-            </View>
-            { item.item % 3 == 0 && <View className="size-1.5 bg-[#22C55E] rounded-full" /> }
+        <View className="h-12 w-[14.28%] flex flex-col items-center justify-start">
+                <View className={`size-10 rounded-full ${item.item == 24 ? `bg-blue` : ``}`}>
+                    <View className="flex flex-col items-center justify-between h-8">
+                        <View className="pt-1">
+                            <AppText className={`font-lexend-6 text-center ${item.item == 24 ? 'text-white' : `text-primary-text`}`}>{item.item}</AppText>
+                        </View>
+                        { item.item % 3 == 0 && <View className="size-1.5 bg-subject-green rounded-full" /> }
+                    </View>
+                </View>
         </View>
     );
 }
@@ -37,7 +41,7 @@ export const Calendar = forwardRef<View>((_, ref) => {
                 <AppText className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">F</AppText>
                 <AppText className="text-fix font-lexend-6 leading-[14px] text-xs text-[#637588]">S</AppText>
             </View>
-            <View className="py-4">
+            <View className="py-2">
                 <FlatList data={Array.from({length: 31}, (_, i) => i + 1)} renderItem={ (item) => DayBox(item) } numColumns={7} />
             </View>
         </View>

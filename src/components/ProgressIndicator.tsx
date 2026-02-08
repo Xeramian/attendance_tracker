@@ -66,11 +66,15 @@ export const ProgressIndicator = ({ size, progress, topText, bottomText }: { siz
                 </Svg>
             </View>
             <View className='absolute inset-0 items-center justify-center flex flex-col'>
-                <View>
-                    <AppText className="text-quaternary-text text-fix font-lexend-7 leading-[24px] text-xl">{topText}</AppText>
-                </View>
-                <View>
-                    <AppText className='text-primary-text text-5xl text-fix font-lexend-7'>{progress}%</AppText>
+                { topText &&
+                    <View>
+                        <AppText className="text-quaternary-text text-fix font-lexend-7 leading-[24px] text-xl">{topText}</AppText>
+                    </View>
+                }
+                <View className='flex flex-row'>
+                    <AppText className='opacity-0 self-center text-2xl text-fix font-lexend-7'>%</AppText>
+                    <AppText className='text-primary-text text-5xl text-fix font-lexend-7'>{progress}</AppText>
+                    <AppText className='text-secondary-text self-center text-2xl text-fix font-lexend-7'>%</AppText>
                 </View>
                 <View>
                     <AppText className="text-secondary-text text-fix font-lexend-6 leading-[16px] text-sm">{bottomText}</AppText>

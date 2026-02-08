@@ -3,10 +3,13 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack, Tabs } from 'expo-router';
 import '../../global.css';
 import { useEffect } from 'react';
+import { StatusBar } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function _RootLayout() {
+
+    StatusBar.setBackgroundColor('#000000');
 
     const [loaded, error] = useFonts({
         'Lexend-ExtraLight': require('assets/fonts/lexend/Lexend-ExtraLight.ttf'),

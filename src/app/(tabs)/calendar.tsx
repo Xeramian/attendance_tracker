@@ -20,7 +20,7 @@ export default function CalendarScreen() {
     return (
         <PageLayout>
             {/* Main Header */}
-            <Header heading='Calendar' rightActions={["filter-list", "more-vert"]} />
+            <Header heading='Calendar' rightActions={[{ icon: "filter-list" }, { icon: "more-vert" }]} />
 
             {/* Calendar */}
             <Calendar ref={refCalendar} />

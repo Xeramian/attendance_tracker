@@ -70,7 +70,12 @@
     --color-success-background: #DCFCE7;
     --color-success: #15803D;
 
-
+    --color-subject-blue: #3B82F6;
+    --color-subject-green: #22C55E;
+    --color-subject-purple: #A855F7;
+    --color-subject-orange: #F97316;
+    --color-subject-pink: #EC4899;
+    --color-subject-gray: #6B7280;
 }
 
 @utility text-fix {

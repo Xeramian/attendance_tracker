@@ -4,12 +4,13 @@ import { QuickActions } from '@/components/QuickActions';
 import { PageLayout } from '@/components/PageLayout';
 import { Platform, ScrollView } from 'react-native';
 import { Header } from '@/components/Header';
+import { actions } from '@/constants/actions';
 
 export default function HomeScreen() {
     return (
         <PageLayout>
             {/* Main Header */}
-            <Header heading='Welcome back, Xeramian!' subheading='Computer Science Major' rightActions={["notifications"]} />
+            <Header heading='Welcome back, Xeramian!' subheading='Computer Science Major' rightActions={[actions.notification]} />
             <ScrollView showsVerticalScrollIndicator={Platform.OS == 'web'} className="grow" contentContainerClassName="grow">
 
                 {/* Attendance Card */}
