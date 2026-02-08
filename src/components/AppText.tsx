@@ -11,8 +11,6 @@ export const AppText = ({ children, ...props }: TextProps) => {
     <Text 
       {...props} 
       textBreakStrategy='simple'
-    >
-      {processedChildren}
-    </Text>
+    >{processedChildren}</Text>
   );
 };

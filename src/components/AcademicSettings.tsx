@@ -12,9 +12,9 @@ export const AcademicSettings = () => {
                 <Pressable onPress={() => { router.push('/attendanceConfig/') }}>
                     <SettingsTile icon="analytics"  primaryColor={"#EA580C"} secondaryColor={"#FFF7ED"} value="Attendance Treshold" />
                 </Pressable>
-                <Pressable onPress={() => { router.push('/manage-notifications') }}>
+                {/* <Pressable onPress={() => { router.push('/manage-notifications') }}>
                     <SettingsTile icon="notifications"  primaryColor={"#DB2777"} secondaryColor={"#FDF2F8"} value="Notifications" />
-                </Pressable>
+                </Pressable> */}
                 <Pressable onPress={() => { router.push('/manage-subjects') }}>
                     <SettingsTile icon="library-books"  primaryColor={"#0D9488"} secondaryColor={"#F0FDFA"} value="Manage Subjects" />
                 </Pressable>
