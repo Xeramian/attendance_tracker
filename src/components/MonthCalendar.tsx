@@ -18,9 +18,9 @@ const DayBox = (item: ListRenderItemInfo<number>) => {
     );
 }
 
-export const Calendar = forwardRef<View>((_, ref) => {
+export const MonthCalendar = () => {
     return (
-        <View ref={ref} className="flex flex-col gap-4">
+        <View className="flex flex-col gap-4">
             <View className="h-16 flex flex-row justify-around items-center">
                 <View className="flex-1 flex items-center justify-center">
                     <MaterialIcons name="chevron-left" size={20} color="#111418" />
@@ -46,4 +46,4 @@ export const Calendar = forwardRef<View>((_, ref) => {
             </View>
         </View>
     );
-})
+}

@@ -8,7 +8,9 @@ export const ClassesStatus = () => {
         <View className='my-2 mx-4 flex flex-col gap-3 items-stretch'>
             <View className='flex flex-row h-7 items-center justify-between select-none'>
                 <AppText className='text-primary-text leading-[20px] text-lg text-fix font-lexend-7 grow'>Next Class</AppText>
-                <AppText className='text-nav leading-[16px] text-sm text-fix font-lexend-5 grow text-right'>See all</AppText>
+                <Pressable onPress={() => { router.push({pathname: '/calendar', params: { expanded: 'true' }}); }}>
+                    <AppText className='text-nav leading-[16px] text-sm text-fix font-lexend-5 grow text-right'>See all</AppText>
+                </Pressable>
             </View>
             <Pressable onPress={() => { router.push('/subjectInfo/Mathematics') }} className='border rounded-xl bg-white border-light-border p-4 flex flex-row justify-between'>
                 <View className='flex flex-col gap-4'>

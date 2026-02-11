@@ -20,6 +20,16 @@ import { actions } from '@/constants/actions';
 const subjectColorPrimary = '#2563EB';
 const subjectColorSecondary = '#EFF6FF';
 
+const DAYS = [
+    {name: 'MON', color: `#4A90E2`},
+    {name: 'TUE', color: `#50E3C2`},
+    {name: 'WED', color: `#BD10E0`},
+    {name: 'THU', color: `#F5A623`},
+    {name: 'FRI', color: `#D0021B`},
+    {name: 'SAT', color: `#48BB78`},
+    {name: 'SUN', color: `#A0AEC0`}
+]
+
 export default function AttendanceDetailsScreen() {
     const { subjectID } = useLocalSearchParams<{ subjectID: string }>();
 
@@ -49,11 +59,13 @@ export default function AttendanceDetailsScreen() {
                     <View className='flex flex-col gap-3'>
                         <AppText className='text-secondary-text text-xs text-fix font-lexend-6'>NOTIFICATION SCHEDULE</AppText>
                         <View className='flex flex-col bg-[#FFFFFF] rounded-xl border-4 border-light-border'>
-                            <NotificationSchedule day='MON' title='Morning Session' time='10:00 AM - 11:30 AM' />
+                            <NotificationSchedule day={1} title='Morning Session' time='10:00 AM - 11:30 AM' />
                             <View className='h-0.5 bg-light-border' />
-                            <NotificationSchedule day='WED' title='Afternoon Lab' time='2:00 PM - 3:30 PM' />
+                            <NotificationSchedule day={3} title='Afternoon Lab' time='2:00 PM - 3:30 PM' />
                             <View className='h-0.5 bg-light-border' />
-                            <NotificationSchedule day='FRI' title='Review Class' time='9:00 AM - 10:00 AM' />
+                            <NotificationSchedule day={5} title='Afternoon Lab' time='2:00 PM - 3:30 PM' />
+                            <View className='h-0.5 bg-light-border' />
+                            <NotificationSchedule day={6} title='Review Class' time='9:00 AM - 10:00 AM' />
                         </View>
                     </View>
                     <View className='flex flex-col gap-3'>
@@ -75,7 +87,7 @@ export default function AttendanceDetailsScreen() {
     );
 }
 
-const NotificationSchedule = ({ day, title, time }: { day: string, title: string, time: string }) => {
+const NotificationSchedule = ({ day, title, time }: { day: number, title: string, time: string }) => {
 
     const [checked, setChecked] = useState(true);
 
@@ -103,8 +115,8 @@ const NotificationSchedule = ({ day, title, time }: { day: string, title: string
 
     return (
         <View className='flex flex-row h-20 p-4 gap-4'>
-            <View style={{display: 'flex', borderRadius: 8, backgroundColor: subjectColorSecondary, width: 48, height: 48, alignItems: 'center', justifyContent: 'center'}}>
-                <AppText style={{fontSize: 12, fontFamily: 'Lexend-Bold', color: subjectColorPrimary}}> {day}</AppText>
+            <View style={{display: 'flex', borderRadius: 8, backgroundColor: `${DAYS[day].color}33`, width: 48, height: 48, alignItems: 'center', justifyContent: 'center'}}>
+                <AppText style={{fontSize: 12, fontFamily: 'Lexend-Bold', color: DAYS[day].color}}> {DAYS[day].name} </AppText>
             </View>
             <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                 <AppText className='text-primary-text font-lexend-6 text-[16px]'>{title}</AppText>

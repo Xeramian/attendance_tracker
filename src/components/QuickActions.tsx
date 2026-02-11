@@ -2,6 +2,7 @@ import { AppText } from '@/components/AppText';
 import { MaterialIcons } from "@expo/vector-icons";
 import { ScrollView, View } from "react-native";
 import { QuickAction } from "./QuickAction";
+import { router } from 'expo-router';
 
 export const QuickActions = () => {
     return (
@@ -11,9 +12,9 @@ export const QuickActions = () => {
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerClassName='min-w-full flex flex-row justify-around gap-4'>
                 <QuickAction icon="check-circle" actionText="Mark Present" />
-                <QuickAction icon="add-circle" actionText="Add Class" />
-                <QuickAction icon="bar-chart" actionText="Analytics" />
-                <QuickAction icon="event-busy" actionText="Request Leave" />
+                <QuickAction onPress={() => { router.push({pathname: '/calendar', params: { expanded: 'true' }}); }} icon="schedule" actionText="Schedule" />
+                <QuickAction onPress={() => { router.push('/stats'); }} icon="bar-chart" actionText="Analytics" />
+                <QuickAction onPress={() => { router.push('/manage-subjects'); }} icon="library-books" actionText="Manage" />
             </ScrollView>
         </View>
 

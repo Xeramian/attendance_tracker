@@ -5,7 +5,7 @@ import { actions } from "@/constants/actions";
 import { colors } from "@/constants/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { Modal, Platform, Pressable, ScrollView, TextInput, useWindowDimensions, View } from "react-native";
+import { ColorValue, Modal, Platform, Pressable, ScrollView, TextInput, useWindowDimensions, View } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, { clamp, Easing, interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
@@ -74,11 +74,16 @@ export default function ManageSubjectsScreen() {
             context.value = translateY.value;
         })
         .onUpdate((event) => {
-            translateY.value = clamp(context.value + event.translationY, -(maximumTopDisplacement??0), 200);
+            translateY.value = clamp(context.value + event.translationY, -(maximumTopDisplacement??0), 300);
         })
         .onEnd((event) => {
             const shouldSnapUp = event.velocityY < 0;
-            translateY.value = withSpring(shouldSnapUp ? -(maximumTopDisplacement??0) : 0);
+            const shouldEnd = translateY.value > 75;
+            if (shouldEnd) {
+                scheduleOnRN(setCreateSubject, false);
+            } else {
+                translateY.value = withSpring(shouldSnapUp ? -(maximumTopDisplacement??0) : 0);
+            }
         })
 
 
@@ -139,7 +144,7 @@ export default function ManageSubjectsScreen() {
                     />
                 </>
             }
-            <Modal onRequestClose={() => {setCreateSubject(false);}} animationType="fade" transparent={true} visible={createSubject}>
+            <Modal onRequestClose={() => {setCreateSubject(false);}} animationType="fade" transparent={true} visible={createSubject} statusBarTranslucent={true}>
                 <GestureHandlerRootView>
                     <View style={{flex: 1, display: "flex", flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', backgroundColor: "#1F29374C"}}>
                         <View style={{backgroundColor: '#F7F8F9', borderRadius: 16, paddingBottom: bottomPadding}}>
@@ -281,10 +286,46 @@ export default function ManageSubjectsScreen() {
                         <MaterialIcons name="swap-horiz" size={14} color={"#617589"} />
                     </View>
                     <View className="flex flex-col gap-2">
-                        <ManageSubject />
-                        <ManageSubject />
-                        <ManageSubject />
-                        <ManageSubject />
+                        <ManageSubject 
+                            code="EE210" 
+                            subject="Signals and Systems" 
+                            prof="Prof. Tony Jacob" 
+                            venue="L2, LHC" 
+                            secondaryColor="#EFF6FF" 
+                            primaryColor="#2563EB" 
+                        />
+                        <ManageSubject 
+                            code="EE204" 
+                            subject="Digital Design" 
+                            prof="Prof. R. Bhattacharjee" 
+                            venue="5G1, Core 5" 
+                            secondaryColor="#F0FDF4" 
+                            primaryColor="#16A34A" 
+                        />
+                        <ManageSubject 
+                            code="EE202" 
+                            subject="Analog Circuits" 
+                            prof="Prof. S. Majumdar" 
+                            venue="L3, LHC" 
+                            secondaryColor="#FAF5FF" 
+                            primaryColor="#9333EA" 
+                        />
+                        <ManageSubject 
+                            code="HS224" 
+                            subject="Psychology" 
+                            prof="Prof. P. Naveen" 
+                            venue="1201, Core 1" 
+                            secondaryColor="#FFF7ED" 
+                            primaryColor="#EA580C" 
+                        />
+                        <ManageSubject 
+                            code="EE206" 
+                            subject="Microprocessors" 
+                            prof="Prof. K. Mohanty" 
+                            venue="5004, Core 5" 
+                            secondaryColor="#FDF2F8" 
+                            primaryColor="#DB2777" 
+                        />
                     </View>
                 </View>
             </ScrollView>
@@ -295,17 +336,14 @@ export default function ManageSubjectsScreen() {
     );
 }
 
-const ManageSubject = () => {
+const ManageSubject = ({ subject, code, venue, prof, primaryColor, secondaryColor }: { subject: string, code: string, venue: string, prof: string, primaryColor: ColorValue, secondaryColor: ColorValue }) => {
 
     const [subjectState, setSubjectState] = useState(0);
 
     const translateX = useSharedValue(0);
     const context = useSharedValue(0);
 
-    const subjectColorPrimary = '#2563EB';
-    const subjectColorSecondary = '#EFF6FF';
-
-    const deleteGesture = Gesture.Pan()
+    const swipeGesture = Gesture.Pan()
         .activeOffsetX([-16, 16])
         .onStart(() => {
             context.value = translateX.value;
@@ -352,21 +390,23 @@ const ManageSubject = () => {
                     </View>
                 </View>
             </Modal>
-            <GestureDetector gesture={deleteGesture}>
-                <Animated.View style={[{backgroundColor: '#FFFFFF', borderRadius: 12, display: "flex", flexDirection: 'column', borderWidth: 1, borderColor: '#F3F4F6', padding: 16, gap: 8}, animatedStyle3]}>
+            <GestureDetector gesture={swipeGesture}>
+                <Animated.View style={[{overflow: 'hidden', backgroundColor: '#FFFFFF', borderRadius: 12, display: "flex", flexDirection: 'column', borderWidth: 1, borderColor: '#F3F4F6', padding: 16, gap: 8}, animatedStyle3]}>
                     <View className="flex flex-row justify-between">
                         <View className="flex flex-col gap-1">
                             <View className="flex flex-row gap-2">
-                                <View style={{backgroundColor: subjectColorSecondary, borderRadius: 4, paddingHorizontal: 3, paddingVertical: 2}}>
-                                    <AppText style={{ fontFamily: 'Lexend-Bold', fontSize: 12, color: subjectColorPrimary }}> CS205</AppText>
+                                <View style={{backgroundColor: secondaryColor, borderRadius: 4, paddingHorizontal: 3, paddingVertical: 2}}>
+                                    <AppText style={{ fontFamily: 'Lexend-Bold', fontSize: 12, color: primaryColor }}> {code}</AppText>
                                 </View>
-                                <AppText className="font-lexend-5 text-[#9CA3AF] text-xs">Core 5, 5004</AppText>
+                                <View className="items-center">
+                                    <AppText className="font-lexend-5 text-[#9CA3AF] text-xs">{venue}</AppText>
+                                </View>
                             </View>
                             <View>
-                                <AppText className="font-lexend-7 text-primary-text text-lg">Computer Science</AppText>
+                                <AppText className="font-lexend-7 text-primary-text text-lg">{subject}</AppText>
                             </View>
                             <View>
-                                <AppText className="font-lexend-4 text-secondary-text text-[14px]">Prof. Sarah Wilson</AppText>
+                                <AppText className="font-lexend-4 text-secondary-text text-[14px]">{prof}</AppText>
                             </View>
                             {/* <View className="flex flex-row gap-2">
                                 <View className="items-center justify-center p-1 rounded-sm bg-green-background">
@@ -378,18 +418,19 @@ const ManageSubject = () => {
                             </View> */}
                         </View>
                         <View className="flex flex-row">
-                            <Pressable style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40, borderRadius: 20, backgroundColor: subjectColorSecondary}}>
-                                <MaterialIcons name="functions" size={24} color={subjectColorPrimary} />
+                            <Pressable style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40, borderRadius: 20, backgroundColor: secondaryColor}}>
+                                <MaterialIcons name="functions" size={24} color={primaryColor} />
                             </Pressable>
                         </View>
                     </View>
                     <View className="self-stretch h-0.5 bg-light-border" />
                     <Pressable onPress={() => { router.push('/notification/ComputerScience') }} className="flex flex-row items-center gap-1.5">
-                        <MaterialIcons name="notifications-active" size={18} color={subjectColorPrimary} />
-                        <AppText style={{ fontFamily: 'Lexend-Medium', fontSize: 14, color: subjectColorPrimary }}>3 Alerts Active</AppText>
+                        <MaterialIcons name="notifications-active" size={18} color={primaryColor} />
+                        <AppText style={{ fontFamily: 'Lexend-Medium', fontSize: 14, color: primaryColor }}>3 Alerts Active</AppText>
                         <View className="flex-1" />
                         <MaterialIcons name="chevron-right" color={"#D1D5DB"} size={24} />
                     </Pressable>
+                    <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, width: 7, backgroundColor: primaryColor}} />
                 </Animated.View>
             </GestureDetector>
             <View className="absolute inset-px rounded-xl overflow-hidden flex flex-row border-px border-light-border -z-1">

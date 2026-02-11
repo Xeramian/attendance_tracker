@@ -11,9 +11,9 @@ export default function StatsScreen() {
     return (
         <PageLayout>
             <Header heading={"Attendance Analytics"} rightActions={[actions.notification]} />
-            <View className='p-4'>
+            {/* <View className='p-4'>
                 <ItemSelector items={["Weekly", "Monthly"]} onSelect={(item) => {console.log(item)}} />
-            </View>
+            </View> */}
             <ScrollView showsVerticalScrollIndicator={Platform.OS == 'web'} className="grow flex flex-col" contentContainerClassName="grow pb-16">
                 <View className='p-6 self-center relative'>
                     <ProgressIndicator size={240} topText={"Total"} bottomText={"Attendance"} progress={75} />
