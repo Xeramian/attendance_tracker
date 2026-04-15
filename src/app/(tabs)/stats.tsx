@@ -5,9 +5,12 @@ import { ProgressIndicator } from '@/components/ProgressIndicator';
 import { SubjectBreakdown } from '@/components/SubjectBreakdown';
 import { actions } from '@/constants/actions';
 import { colors } from '@/constants/colors';
-import { Platform, ScrollView, View } from 'react-native';
+import { useSubjectStore } from '@/store/SubjectStore';
+import { ColorValue, Platform, ScrollView, View } from 'react-native';
+
 
 export default function StatsScreen() {
+    const _subjects = useSubjectStore((state) => state.subjects).map(({ title, color, bg, totalClasses, icon }) => ({ title, color, bg, attended_no_classes: totalClasses.length/2, total_no_classes: totalClasses.length, pass_criteria: 75, icon})) satisfies Array<{ title: string, color: ColorValue, bg: ColorValue, attended_no_classes: number, total_no_classes: number, pass_criteria: number, icon: MaterialIconName }>;
     return (
         <PageLayout>
             <Header heading={"Attendance Analytics"} rightActions={[actions.notification]} />
@@ -18,15 +21,8 @@ export default function StatsScreen() {
                 <View className='p-6 self-center relative'>
                     <ProgressIndicator size={240} topText={"Total"} bottomText={"Attendance"} progress={75} />
                 </View>
-                <SubjectBreakdown subjects={[
-                    {"name": "Physics 101", "color": colors.orange, "bg_color": colors.orange_background, attended_no_classes: 25, total_no_classes: 50, pass_critertia: 60, icon: "science"},
-                    {"name": "Mathematics 101", "color": colors.green, "bg_color": colors.green_background, attended_no_classes: 37, total_no_classes: 40, pass_critertia: 60, icon: "pie-chart"},
-                    {"name": "Physics 101", "color": colors.orange, "bg_color": colors.orange_background, attended_no_classes: 28, total_no_classes: 50, pass_critertia: 60, icon: "science"},
-                    {"name": "Physics 101", "color": colors.orange, "bg_color": colors.orange_background, attended_no_classes: 28, total_no_classes: 50, pass_critertia: 60, icon: "science"},
-                    {"name": "Physics 101", "color": colors.orange, "bg_color": colors.orange_background, attended_no_classes: 28, total_no_classes: 50, pass_critertia: 60, icon: "science"},
-                ]} />
+                <SubjectBreakdown subjects={_subjects} />
             </ScrollView>
         </PageLayout>
-
     );
 }

@@ -30,7 +30,9 @@ export default function CalendarScreen() {
         }
     }, []))
 
-    const [calendarType, setCalendarType] = useState<'month'|'week'>('week');
+    const [calendarType, setCalendarType] = useState<'month'|'week'>('month');
+
+    const [date, setDate] = useState(new Date());
 
     return (
         <PageLayout>
@@ -41,10 +43,10 @@ export default function CalendarScreen() {
                 calendarType == 'month' ? 
                     <>
                         <View onLayout={(event) => {setMaxHeight(event.nativeEvent.layout['height'])}}>
-                            <MonthCalendar />
+                            <MonthCalendar onChangeDate={(date) => {setDate(date)}} />
                         </View>
 
-                        <ScheduleList initialExpanded={expanded} maximumTopDisplacement={maxHeight} />
+                        <ScheduleList date={date} initialExpanded={expanded} maximumTopDisplacement={maxHeight} />
                     </>
                 :
                     <WeekCalendar />

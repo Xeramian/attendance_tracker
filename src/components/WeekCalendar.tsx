@@ -1,18 +1,19 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { Dimensions, Pressable, View } from "react-native";
+import { Dimensions, Platform, Pressable, View } from "react-native";
 import { AppText } from "./AppText";
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import { getClasses } from "@/store/SubjectStore";
 
-const SubjectCard = () => {
+const SubjectCard = ({ title, venue, startTime, endTime }: { title: string, venue: string, startTime: Date, endTime: Date }) => {
     return (
         <View className="flex-1 flex flex-row items-start justify-between bg-[#FFFFFF] rounded-2xl p-4">
-            <View className="flex flex-col">
-                <AppText className="text-fix font-lexend-7 text-[16px] text-primary-text">UX Design Principles</AppText>
-                <AppText className="text-fix font-lexend-5 text-xs text-[#137FEC]">1h 00m</AppText>
+            <View className="flex flex-col shrink">
+                <AppText className="text-fix font-lexend-7 text-[16px] text-primary-text">{title}</AppText>
+                <AppText className="text-fix font-lexend-5 text-xs text-[#137FEC]">{endTime.getHours() * 60 + endTime.getMinutes() - startTime.getHours() * 60 - startTime.getMinutes()}</AppText>
             </View>
             <View className="flex items-center justify-center p-2 rounded-md bg-purple-background">
-                <AppText className="text-fix font-lexend-6 text-xs text-purple">Lab 2</AppText>
+                <AppText className="text-fix font-lexend-6 text-xs text-purple">{venue}</AppText>
             </View>
         </View>
     );
@@ -34,10 +35,6 @@ export const WeekCalendar = () => {
     const [selectedTime, setSelectedTime] = useState(new Date());
 
     const [time, setTime] = useState(new Date());
-
-    console.log(selectedTime);
-
-    const [height, setHeight] = useState(Dimensions.get('screen').height);
 
     return (
         <View className="bg-[#FFFFFF] flex flex-col gap-4 flex-1">
@@ -75,28 +72,28 @@ export const WeekCalendar = () => {
                     })
                 }
             </View>
-            <ScrollView className="bg-page relative" contentContainerClassName="flex flex-row py-8">
-                <View className="absolute w-2">
-                    <View style={{height: height, display: 'flex', flexDirection: 'row', justifyContent: 'center', width: 128}}>
-                        <View className="w-2 rounded-full bg-page-offset" />
+            <ScrollView className="bg-page relative" contentContainerClassName="flex flex-row" showsVerticalScrollIndicator={Platform.OS=='web'}>
+                <View className="flex flex-col gap-8 flex-1 relative">
+                    <View className="absolute w-32 items-stretch flex flex-row h-full justify-center">
+                        <View className="w-2 rounded-full bg-page-offset my-8" />
                     </View>
-                </View>
-                <View onLayout={(event) => {setHeight(event.nativeEvent.layout['height']);console.log(height);}} className="flex flex-col px-13.5 gap-8 flex-1">
+                    <View className="py-8 flex flex-col gap-8">
                     {
-                        Array.from({length: 40}).map((_, index) => 
-                            <View key={index} className="flex flex-row gap-8">
-                                <View className="flex flex-col gap-1">
+                        getClasses(selectedTime.toDateString()).map(({ title, venue, startTime, endTime }, index) => 
+                            <View key={index} className="flex flex-row pr-8">
+                                <View className="flex flex-col gap-1 w-32 items-center">
                                     <View className="rounded-full size-5 bg-white flex items-center justify-center">
                                         <View className="rounded-full size-3 bg-[#137FEC]" />
                                     </View>
-                                    <View className="bg-white rounded-sm h-6 w-12 -translate-x-3 items-center justify-center">
-                                        <AppText className="text-fix font-lexend-7 leading-[20px] text-center text-sm text-primary-text"> 11:30</AppText>
+                                    <View className="bg-white rounded-sm h-6 w-12 items-center justify-center">
+                                        <AppText className="text-fix font-lexend-7 leading-[20px] text-center text-sm text-primary-text"> {`${(startTime.getHours() % 12).toString().padStart(2, '0')}:${startTime.getMinutes().toString().padStart(2, '0')} ${startTime.getHours() < 12 ? 'AM' : 'PM'}`}</AppText>
                                     </View>
                                 </View>
-                                <SubjectCard />
+                                <SubjectCard title={title} venue={venue} startTime={startTime} endTime={endTime} />
                             </View>                        
                         )
                     }
+                    </View>
                 </View>
             </ScrollView>
         </View>

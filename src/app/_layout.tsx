@@ -29,10 +29,6 @@ export default function _RootLayout() {
         }
     }, [loaded, error]);
 
-    if (!loaded && !error) {
-        return null;
-    }
-
     return (
         <GestureHandlerRootView>
             <Stack screenOptions={{ headerShown: false }}>

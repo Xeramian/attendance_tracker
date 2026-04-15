@@ -1,0 +1,1 @@
+Robocopy "X:\Development\Coding\AppDevelopment\ReactNative\attendance_tracker" "X:\dev\attendance_tracker" /E /XD node_modules .expo .gradle build .cxx /R:0 /W:0

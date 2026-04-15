@@ -11,7 +11,7 @@ export const QuickActions = () => {
                 <AppText className='text-primary-text leading-[20px] text-lg text-fix font-lexend-7 grow'>Quick Actions</AppText>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerClassName='min-w-full flex flex-row justify-around gap-4'>
-                <QuickAction icon="check-circle" actionText="Mark Present" />
+                <QuickAction onPress={() => { router.push('/manage-holidays'); }} icon="holiday-village" actionText="Holidays" />
                 <QuickAction onPress={() => { router.push({pathname: '/calendar', params: { expanded: 'true' }}); }} icon="schedule" actionText="Schedule" />
                 <QuickAction onPress={() => { router.push('/stats'); }} icon="bar-chart" actionText="Analytics" />
                 <QuickAction onPress={() => { router.push('/manage-subjects'); }} icon="library-books" actionText="Manage" />

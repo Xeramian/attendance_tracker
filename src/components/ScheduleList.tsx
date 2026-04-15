@@ -5,8 +5,40 @@ import { Gesture, GestureDetector, ScrollView } from "react-native-gesture-handl
 import Animated, { clamp, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { AppText } from "./AppText";
 import { useFocusEffect } from "expo-router";
+import { getClasses, useSubjectStore } from "@/store/SubjectStore";
 
-export const ScheduleList = ({initialExpanded, maximumTopDisplacement}: {initialExpanded: boolean, maximumTopDisplacement?: number}) => {
+const MONTHS = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+];
+
+const DAYS = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+];
+
+export const ScheduleList = ({date, initialExpanded, maximumTopDisplacement}: {date: Date, initialExpanded: boolean, maximumTopDisplacement?: number}) => {
+
+    const todayClasses = getClasses(date.toDateString());
+
+    // forEach((_class) => {
+        
+    // }, classes);
 
     const context = useSharedValue(0);
     const translateY = useSharedValue(initialExpanded ? -(maximumTopDisplacement??0) : 0);
@@ -56,19 +88,37 @@ export const ScheduleList = ({initialExpanded, maximumTopDisplacement}: {initial
                         <View className="w-20 h-2 rounded-full bg-page-offset self-center" />
                         <View className="flex flex-row px-5 py-4 justify-between self-stretch">
                             <View className="flex flex-col gap-0.5">
-                                <AppText className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">Oct 24, Tue</AppText>
+                                <AppText className="text-primary-text text-fix font-lexend-7 leading-[24px] text-xl">{MONTHS[date.getMonth()]} {date.getDate()}, {DAYS[date.getDay()]}</AppText>
                                 <AppText className="text-[#6B7280] text-fix font-lexend-4 leading-[16px] text-sm">3 Classes • 1 Absent</AppText>
                             </View>
-                            <View className="self-stretch items-center justify-center size-10 bg-ui-accent rounded-full">
+                            {/* <View className="self-stretch items-center justify-center size-10 bg-ui-accent rounded-full">
                                 <MaterialIcons name="calendar-today" size={20} color={'#137FEC'} />
-                            </View>
+                            </View> */}
                         </View>
                     </View>
                 </GestureDetector>
                 <View className="flex-1">
                     <ScrollView contentContainerClassName="flex flex-col p-5 gap-4 items-stretch justify-start" showsVerticalScrollIndicator={Platform.OS=='web'}>
-                    {/* <View > */}
-                        <ScheduleCard 
+                        
+                        {
+                            todayClasses.map(({ title, venue, startTime, endTime }, index) => {
+                                const startsIn = (startTime.getHours() * 60 + startTime.getMinutes() - new Date().getHours() * 60 - new Date().getMinutes())
+                                const endsIn = (endTime.getHours() * 60 + endTime.getMinutes() - new Date().getHours() * 60 - new Date().getMinutes())
+                                return <ScheduleCard
+                                    key={index}
+                                    title={title}
+                                    venue={venue}
+                                    attended={true}
+                                    status={startsIn > 0 ? "Upcoming" : startsIn < 0 && endsIn > 0 ? "Ongoing" : "Completed"}
+                                    startsIn={startsIn}
+                                    startTime={`${(startTime.getHours() % 12).toString().padStart(2, '0')}:${startTime.getMinutes().toString().padStart(2, '0')} ${startTime.getHours() < 12 ? 'AM' : 'PM'}`}
+                                    endTime={`${(endTime.getHours() % 12).toString().padStart(2, '0')}:${endTime.getMinutes().toString().padStart(2, '0')} ${endTime.getHours() < 12 ? 'AM' : 'PM'}`}
+                                />
+                            }
+                            )
+                        }
+
+                        {/* <ScheduleCard 
                             title="Signals and Systems"
                             venue="L2, LHC"
                             status="Ongoing" 
@@ -76,7 +126,6 @@ export const ScheduleList = ({initialExpanded, maximumTopDisplacement}: {initial
                             attended={true} 
                         />
 
-                        {/* Upcoming Class (Signals & Systems) */}
                         <ScheduleCard 
                             title="Digital Design"
                             venue="5G1, Core 5"
@@ -85,7 +134,6 @@ export const ScheduleList = ({initialExpanded, maximumTopDisplacement}: {initial
                             attended={false} 
                         />
 
-                        {/* Late Afternoon Class (Microprocessors) */}
                         <ScheduleCard 
                             title="Microprocessors"
                             venue="5004, Core 5"
@@ -94,7 +142,6 @@ export const ScheduleList = ({initialExpanded, maximumTopDisplacement}: {initial
                             attended={false} 
                         />
 
-                        {/* Past Class (Analog Circuits) */}
                         <ScheduleCard 
                             title="Analog Circuits"
                             venue="L3, LHC"
@@ -103,7 +150,6 @@ export const ScheduleList = ({initialExpanded, maximumTopDisplacement}: {initial
                             attended={true} 
                         />
                         
-                        {/* HSS Elective Example */}
                         <ScheduleCard 
                             title="Psychology"
                             venue="1201, Core 1"
@@ -126,12 +172,12 @@ export const ScheduleList = ({initialExpanded, maximumTopDisplacement}: {initial
     );
 }
 
-const ScheduleCard = ({ title, venue, status, attended, startsIn }: { title: string, venue: string, status: 'Completed'|'Ongoing'|'Upcoming', attended: boolean, startsIn: number }) => {
+const ScheduleCard = ({ title, venue, status, attended, startsIn, startTime, endTime }: { title: string, venue: string, status: 'Completed'|'Ongoing'|'Upcoming', attended: boolean, startsIn: number, startTime: string, endTime: string }) => {
     return (
         <View className="w-full gap-3 p-4 border-2 border-light-border rounded-xl">
             <View className="flex flex-col gap-3">
-                <View className="flex flex-row justify-between">
-                    <View className="flex flex-col gap-1">
+                <View className="flex grow-0 flex-row justify-between gap-4">
+                    <View className="flex flex-col gap-1 flex-1">
                         <View className="flex flex-row gap-1 items-center">
                             {
                                 status == 'Completed' ? 
@@ -146,9 +192,9 @@ const ScheduleCard = ({ title, venue, status, attended, startsIn }: { title: str
                         </View>
                         <AppText className="text-primary-text text-fix font-lexend-7 text-lg">{title}</AppText>
                     </View>
-                    <View className="flex flex-col items-end">
-                        <AppText className={`${status == 'Ongoing' ? 'text-[#137FEC]' : 'text-primary-text'} text-fix font-lexend-6 text-sm`}>08:30 AM</AppText>
-                        <AppText className="text-secondary-text text-fix font-lexend-4 text-xs">09:30 AM</AppText>
+                    <View className="flex shrink-0 flex-col items-end">
+                        <AppText className={`${status == 'Ongoing' ? 'text-[#137FEC]' : 'text-primary-text'} text-fix font-lexend-6 text-sm`}>{startTime}</AppText>
+                        <AppText className="text-secondary-text text-fix font-lexend-4 text-xs">{endTime}</AppText>
                     </View>
                 </View>
                 <View className="h-0.5 bg-light-border rounded-full" />

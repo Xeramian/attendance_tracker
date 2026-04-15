@@ -7,12 +7,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { ColorValue, Modal, Platform, Pressable, ScrollView, TextInput, useWindowDimensions, View } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import Animated, { clamp, Easing, interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
+import Animated, { clamp, Easing, interpolateColor, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { useSubjectStore } from "@/store/SubjectStore";
 
 const DAYS = [
     { label: "MON", value: 1 },
@@ -24,28 +25,24 @@ const DAYS = [
     { label: "SUN", value: 7 },
 ]
 
+const subject_colors = [
+    colors.subject_blue,
+    colors.subject_green,
+    colors.subject_purple,
+    colors.subject_orange,
+    colors.subject_pink,
+    colors.subject_gray,
+];
+
 export default function ManageSubjectsScreen() {
 
-    const { height } = useWindowDimensions();
-    
-    const context = useSharedValue(0);
-    const translateY = useSharedValue(0);
-    const open = useSharedValue(0);
+    const subjects = useSubjectStore(({subjects}) => subjects);
 
     const [createSubject, setCreateSubject] = useState(false);
 
     const [selectedColor, setSelectedColor] = useState(-1);
 
-    const subject_colors = [
-        colors.subject_blue,
-        colors.subject_green,
-        colors.subject_purple,
-        colors.subject_orange,
-        colors.subject_pink,
-        colors.subject_gray,
-    ];
-
-    const [classTimings, setClassTimings] = useState<Array<{ day: number | null, startTime: string | null, endTime: string | null }>>([{day: null, startTime: null, endTime: null}]);
+    const [classTimings, setClassTimings] = useState<Array<{ day: number | null, startTime: Date | null, endTime: Date | null }>>([{day: null, startTime: null, endTime: null}]);
 
     const [showPicker, setShowPicker] = useState(false);
     const [pickerStep, setPickerStep] = useState<'startTime' | 'endTime'>('startTime');
@@ -54,13 +51,19 @@ export default function ManageSubjectsScreen() {
 
     const bottomPadding = useSafeAreaInsets().bottom;
 
+    const { height } = useWindowDimensions();
+    
+    const context = useSharedValue(0);
+    const translateY = useSharedValue(0);
+    const open = useSharedValue(0);
+
     const maximumTopDisplacement = height - 670 - bottomPadding;
 
     useEffect(() => {
-        open.value = withTiming(createSubject ? 380 : 0)
-        if (!createSubject) {
+        if (createSubject) {
             translateY.value = 0;
         }
+        open.value = withTiming(createSubject ? 380 : 0)
     }, [createSubject]);
 
     const animatedStyle = useAnimatedStyle(() => {
@@ -103,15 +106,9 @@ export default function ManageSubjectsScreen() {
                 setClassTimings((classTimings) => {
 
                     if (date < tempStartTime) return classTimings;
-
-                    const startHour = tempStartTime.getHours().toString().padStart(2, '0');
-                    const startMinute = tempStartTime.getMinutes().toString().padStart(2, '0');
-                    const endHour = date.getHours().toString().padStart(2, '0');
-                    const endMinute = date.getMinutes().toString().padStart(2, '0');
-
                     const newClassTimings = [...classTimings];
-                    newClassTimings[editingIndex].startTime = `${startHour}:${startMinute}`;
-                    newClassTimings[editingIndex].endTime = `${endHour}:${endMinute}`;
+                    newClassTimings[editingIndex].startTime = tempStartTime;
+                    newClassTimings[editingIndex].endTime = date;
                     return newClassTimings;
                 })
                 setShowPicker(false);
@@ -158,19 +155,19 @@ export default function ManageSubjectsScreen() {
                                 <Animated.View style={animatedStyle}>
                                     <Animated.ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={animatedStyle}>
                                         <View style={[{ padding: 16, display: "flex", flexDirection: 'column', gap: 16 }]}>
-                                            <View className="bg-[#FFFFFF] rounded-xl p-4 gap-2">
+                                            <View className="bg-[#FFFFFF] rounded-xl p-4 gap-4">
                                                 <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-[#9CA3AF]">GENERAL INFO</AppText>
                                                 <View />
-                                                <View className="flex flex-col gap-2">
+                                                <View className="flex flex-col gap-1">
                                                     <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-secondary-text">Subject Name</AppText>
                                                     <TextInput placeholder="e.g. Mathemathics 101" placeholderTextColor={"#88898B"} style={{ paddingVertical: 12, paddingHorizontal: 16, color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14, backgroundColor: '#F3F4F6', borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB' }} underlineColorAndroid={"transparent"} />
                                                 </View>
-                                                <View className="flex flex-col gap-2">
+                                                <View className="flex flex-col gap-1">
                                                     <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-secondary-text">Venue</AppText>
                                                     <TextInput placeholder="e.g. Lecture Hall 4" placeholderTextColor={"#88898B"} style={{ paddingVertical: 12, paddingHorizontal: 16, color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14, backgroundColor: '#F3F4F6', borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB' }} underlineColorAndroid={"transparent"} />
                                                 </View>
                                             </View>
-                                            <View className="bg-[#FFFFFF] rounded-xl p-4 gap-2">
+                                            <View className="bg-[#FFFFFF] rounded-xl p-4 gap-4">
                                                 <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-[#9CA3AF]">VISUALS</AppText>
                                                 <View />
                                                 <View className="flex flex-col gap-3">
@@ -243,7 +240,7 @@ export default function ManageSubjectsScreen() {
                                                                             <Pressable onPress={() => { setEditingIndex(index); setShowPicker(true); }} style={{ flex: 4, paddingVertical: 12, paddingHorizontal: 16, backgroundColor: '#F3F4F6', borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB' }}>
                                                                                 {
                                                                                     startTime != null && endTime != null &&
-                                                                                    <AppText style={{ color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14 }} >{startTime} - {endTime}</AppText>
+                                                                                    <AppText style={{ color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14 }} >{`${startTime.getHours() % 12}:${startTime.getMinutes().toString().padStart(2, '0')} ${startTime.getHours() < 12 ? 'AM' : 'PM'}`} - {`${endTime.getHours()}:${endTime.getMinutes().toString().padStart(2, '0')} ${endTime.getHours() < 12 ? 'AM' : 'PM'}`}</AppText>
                                                                                 }
                                                                             </Pressable>
                                                                             <Pressable onPress={() => { setClassTimings([...classTimings.slice(0, index), ...classTimings.slice(index+1)]) }} className="w-6 items-center justify-center">
@@ -286,7 +283,21 @@ export default function ManageSubjectsScreen() {
                         <MaterialIcons name="swap-horiz" size={14} color={"#617589"} />
                     </View>
                     <View className="flex flex-col gap-2">
-                        <ManageSubject 
+                        {
+                            subjects.map(({ title, venue, code, prof, weeklySchedule, color, bg }, index) => 
+                                <ManageSubject
+                                    key={index}
+                                    name={title}
+                                    venue={venue}
+                                    code={code}
+                                    prof={prof}
+                                    schedule={weeklySchedule.schedule}
+                                    primaryColor={color}
+                                    secondaryColor={bg}
+                                />
+                            )
+                        }
+                        {/* <ManageSubject 
                             code="EE210" 
                             subject="Signals and Systems" 
                             prof="Prof. Tony Jacob" 
@@ -325,31 +336,31 @@ export default function ManageSubjectsScreen() {
                             venue="5004, Core 5" 
                             secondaryColor="#FDF2F8" 
                             primaryColor="#DB2777" 
-                        />
+                        /> */}
                     </View>
                 </View>
             </ScrollView>
-            <Pressable onPress={() => setCreateSubject(true)} className="absolute bottom-6 right-6 size-14 rounded-full bg-[#137FEC] items-center justify-center drop-shadow-2xl">
+            <Pressable onPress={() => {setCreateSubject(true);}} className="absolute bottom-6 right-6 size-14 rounded-full bg-[#137FEC] items-center justify-center drop-shadow-2xl">
                 <MaterialIcons name="add" size={32} color={"#FFFFFF"} />
             </Pressable>
         </PageLayout>
     );
 }
 
-const ManageSubject = ({ subject, code, venue, prof, primaryColor, secondaryColor }: { subject: string, code: string, venue: string, prof: string, primaryColor: ColorValue, secondaryColor: ColorValue }) => {
+const ManageSubject = ({ name, code, venue, prof, schedule, primaryColor, secondaryColor }: { name: string, code: string, venue: string, prof: string, schedule: Array<{ day: number, startTime: Date, endTime: Date }>, primaryColor: ColorValue, secondaryColor: ColorValue }) => {
 
     const [subjectState, setSubjectState] = useState(0);
 
     const translateX = useSharedValue(0);
-    const context = useSharedValue(0);
+    const context2 = useSharedValue(0);
 
     const swipeGesture = Gesture.Pan()
         .activeOffsetX([-16, 16])
         .onStart(() => {
-            context.value = translateX.value;
+            context2.value = translateX.value;
         })
         .onUpdate((event) => {
-            translateX.value = clamp(context.value + event.translationX, -140, 140);
+            translateX.value = clamp(context2.value + event.translationX, -140, 140);
         })
         .onEnd(() => {
             if (translateX.value < -110) {
@@ -367,9 +378,108 @@ const ManageSubject = ({ subject, code, venue, prof, primaryColor, secondaryColo
         };
     })
 
+    const [selectedColor, setSelectedColor] = useState(-1);
+
+    const [classTimings, setClassTimings] = useState<Array<{ day: number | null, startTime: Date | null, endTime: Date | null }>>([...schedule]);
+
+    const [showPicker, setShowPicker] = useState(false);
+    const [pickerStep, setPickerStep] = useState<'startTime' | 'endTime'>('startTime');
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
+    const [tempStartTime, setTempStartTime] = useState(new Date(0));
+
+    
+    const bottomPadding = useSafeAreaInsets().bottom;
+
+    const { height } = useWindowDimensions();
+    
+    const context = useSharedValue(0);
+    const translateY = useSharedValue(0);
+    const open = useSharedValue(0);
+
+    const maximumTopDisplacement = height - 670 - bottomPadding;
+
+    useEffect(() => {
+        if (subjectState != 0) {
+            translateY.value = 0;
+        }
+        open.value = withTiming(subjectState == 2 ? 380 : 0)
+    }, [subjectState]);
+
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            maxHeight: open.value - translateY.value,
+        };
+    });
+
+    const panGesture = Gesture.Pan()
+        .onStart(() => {
+            context.value = translateY.value;
+        })
+        .onUpdate((event) => {
+            translateY.value = clamp(context.value + event.translationY, -(maximumTopDisplacement??0), 300);
+        })
+        .onEnd((event) => {
+            const shouldSnapUp = event.velocityY < 0;
+            const shouldEnd = translateY.value > 75;
+            if (shouldEnd) {
+                scheduleOnRN(setSubjectState, 0);
+            } else {
+                translateY.value = withSpring(shouldSnapUp ? -(maximumTopDisplacement??0) : 0);
+            }
+        })
+
+    const handleTimeChange = (event: DateTimePickerEvent, date?: Date) => {
+        if (editingIndex == null || event.type == 'dismissed') {
+            setShowPicker(false);
+            setPickerStep('startTime');
+            return;
+        }
+
+        if (date != null) {
+
+            if (pickerStep == 'startTime') {
+                setTempStartTime(date);
+                setPickerStep('endTime');
+            } else {
+                setClassTimings((classTimings) => {
+
+                    if (date < tempStartTime) return classTimings;
+                    const newClassTimings = [...classTimings];
+                    newClassTimings[editingIndex].startTime = tempStartTime;
+                    newClassTimings[editingIndex].endTime = date;
+                    return newClassTimings;
+                })
+                setShowPicker(false);
+                setPickerStep('startTime');
+            }
+
+        }
+
+    }
+
 
     return (
         <View className="relative">
+            {
+                showPicker &&
+                <>
+                    <Pressable 
+                        style={{ 
+                            position: 'absolute', 
+                            inset: 0, 
+                            backgroundColor: 'transparent', // Change to 'rgba(0,0,0,0.05)' to test visually
+                            zIndex: 999 
+                        }} 
+                    />
+                    <DateTimePicker
+                        key={`${editingIndex}-${pickerStep}`} // Unique key
+                        onChange={handleTimeChange}
+                        mode="time"
+                        is24Hour={true}
+                        value={new Date(2026, 0, 0)}
+                    />
+                </>
+            }
             <Modal onRequestClose={() => {setSubjectState(0);}} transparent={true} animationType="fade" visible={subjectState == 1}>
                 <View className="flex-1 items-center justify-center bg-gray-800/30">
                     <View className="bg-[#FFFFFF] rounded-xl flex flex-col w-80 p-6 gap-6">
@@ -390,6 +500,140 @@ const ManageSubject = ({ subject, code, venue, prof, primaryColor, secondaryColo
                     </View>
                 </View>
             </Modal>
+            <Modal onRequestClose={() => {setSubjectState(0);}} transparent={true} animationType="fade" visible={subjectState == 2}>
+                <GestureHandlerRootView>
+                    <View style={{flex: 1, display: "flex", flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', backgroundColor: "#1F29374C"}}>
+                        <View style={{backgroundColor: '#F7F8F9', borderRadius: 16, paddingBottom: bottomPadding}}>
+                            <View style={[{display: "flex", flexDirection: "column", backgroundColor: '#f7f8f9', borderTopRightRadius: 16, borderTopLeftRadius: 16, borderColor: '#F3F4F6', borderTopWidth: 2}]}>
+                                <GestureDetector gesture={panGesture}>
+                                    <View className="bg-[#FFFFFF] border-b-2 border-light-border rounded-t-2xl flex flex-col gap-4 py-4">
+                                        <View className="w-20 h-2 rounded-full bg-page-offset self-center" />
+                                        <AppText className="font-lexend-7 text-xl text-center text-primary-text">Edit Subject</AppText>
+                                    </View>
+                                </GestureDetector>
+                                <Animated.View style={animatedStyle}>
+                                    <Animated.ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={animatedStyle}>
+                                        <View style={[{ padding: 16, display: "flex", flexDirection: 'column', gap: 16 }]}>
+                                            <View className="bg-[#FFFFFF] rounded-xl p-4 gap-4">
+                                                <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-[#9CA3AF]">GENERAL INFO</AppText>
+                                                <View />
+                                                <View className="flex flex-col gap-1">
+                                                    <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-secondary-text">Subject Name</AppText>
+                                                    <TextInput defaultValue={name} placeholder="e.g. Mathemathics 101" placeholderTextColor={"#88898B"} style={{ paddingVertical: 12, paddingHorizontal: 16, color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14, backgroundColor: '#F3F4F6', borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB' }} underlineColorAndroid={"transparent"} />
+                                                </View>
+                                                <View className="flex flex-col gap-1">
+                                                    <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-secondary-text">Venue</AppText>
+                                                    <TextInput defaultValue={venue} placeholder="e.g. Lecture Hall 4" placeholderTextColor={"#88898B"} style={{ paddingVertical: 12, paddingHorizontal: 16, color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14, backgroundColor: '#F3F4F6', borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB' }} underlineColorAndroid={"transparent"} />
+                                                </View>
+                                            </View>
+                                            <View className="bg-[#FFFFFF] rounded-xl p-4 gap-4">
+                                                <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-[#9CA3AF]">VISUALS</AppText>
+                                                <View />
+                                                <View className="flex flex-col gap-3">
+                                                    <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-secondary-text">Color Code</AppText>
+                                                    <View className="flex flex-row justify-between">
+                                                        {
+                                                            subject_colors.map((color, index) => {
+                                                                if ( selectedColor == -1 && primaryColor == color ) setSelectedColor(index);
+                                                                return (
+                                                                    <Pressable hitSlop={6} key={index} onPress={() => setSelectedColor(index)} className="relative h-10">
+                                                                        {
+                                                                            selectedColor == index && <>
+                                                                                <View style={{ width: 40, height: 40, backgroundColor: color, borderRadius: 20, position: 'absolute' }} />
+                                                                                <View style={{ width: 36, height: 36, backgroundColor: "#FFFFFF", borderRadius: 18, position: 'absolute', inset: 2 }} />
+                                                                            </>
+                                                                        }
+                                                                        <View style={{ width: 32, height: 32, backgroundColor: color, borderRadius: 16, inset: 4 }} />
+                                                                    </Pressable>
+                                                                )
+                                                            })
+                                                        }
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View className="bg-[#FFFFFF] rounded-xl p-4 gap-2">
+                                                <View className="flex flex-row justify-between">
+                                                    <AppText className="ml-2 self-start font-lexend-6 text-sm text-center text-[#9CA3AF]">CLASS TIMINGS</AppText>
+                                                    <Pressable onPress={() => { setClassTimings([...classTimings, {day: null, startTime: null, endTime: null}]) }} className="flex flex-row justify-between items-center">
+                                                        <MaterialIcons name="add-circle" color={colors.blue} size={16} />
+                                                        <AppText className="font-lexend-5 text-sm text-fix text-center text-blue"> Add Slot</AppText>
+                                                    </Pressable>
+                                                </View>
+                                                {
+                                                    classTimings.length > 0 &&
+                                                    <>
+                                                        <View />
+                                                        <View className="flex flex-col gap-4">
+                                                            {
+                                                                classTimings.map(({ day, startTime, endTime }, index) => {
+                                                                    return (
+                                                                        <View key={index} className="flex flex-row gap-4">
+                                                                            <Dropdown
+                                                                                data={DAYS}
+                                                                                labelField={"label"}
+                                                                                valueField={"value"}
+                                                                                value={ day }
+                                                                                placeholder="Day"
+                                                                                dropdownPosition="top"
+                                                                                onChange={() => {}}
+                                                                                showsVerticalScrollIndicator={Platform.OS=='web'}
+                                                                                style={{ width: 96, paddingVertical: 12, paddingHorizontal: 16, backgroundColor: '#F3F4F6', borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB' }}
+                                                                                selectedTextStyle={{ color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14 }}
+                                                                                placeholderStyle={{
+                                                                                    color: '#88898B',
+                                                                                    fontFamily: 'Lexend-Medium',
+                                                                                    fontSize: 14
+                                                                                }}
+                                                                                containerStyle={{
+                                                                                    borderRadius: 12,
+                                                                                    overflow: 'hidden'
+                                                                                }}
+                                                                                // itemContainerStyle={{
+                                                                                //     backgroundColor: '#'
+                                                                                // }}
+                                                                                itemTextStyle={{ 
+                                                                                    color: '#111418', 
+                                                                                    fontFamily: 'Lexend-Medium', 
+                                                                                    fontSize: 14 
+                                                                                }}
+                                                                            />
+                                                                            <Pressable onPress={() => { setEditingIndex(index); setShowPicker(true); }} style={{ flex: 4, paddingVertical: 12, paddingHorizontal: 16, backgroundColor: '#F3F4F6', borderRadius: 12, borderWidth: 2, borderColor: '#E5E7EB' }}>
+                                                                                {
+                                                                                    startTime != null && endTime != null &&
+                                                                                    <AppText style={{ color: '#111418', fontFamily: 'Lexend-Medium', fontSize: 14 }} >{`${startTime.getHours() % 12}:${startTime.getMinutes().toString().padStart(2, '0')} ${startTime.getHours() < 12 ? 'AM' : 'PM'}`} - {`${endTime.getHours()}:${endTime.getMinutes().toString().padStart(2, '0')} ${endTime.getHours() < 12 ? 'AM' : 'PM'}`}</AppText>
+                                                                                }
+                                                                            </Pressable>
+                                                                            <Pressable onPress={() => { setClassTimings([...classTimings.slice(0, index), ...classTimings.slice(index+1)]) }} className="w-6 items-center justify-center">
+                                                                                <MaterialIcons name="remove-circle-outline" size={20} color={"#9CA3AF"} />
+                                                                            </Pressable>
+                                                                        </View>
+                                                                    );
+                                                                })
+                                                            }
+                                                        </View>
+                                                    </>
+                                                }
+                                            </View>
+                                        </View>
+                                    </Animated.ScrollView>
+                                </Animated.View>
+                            </View>
+                            <View className="flex flex-col mt-4 gap-1.5 px-8">
+                                <Pressable>
+                                    <View className="rounded-xl bg-[#137FEC] h-12 items-center justify-center">
+                                        <AppText className="font-lexend-5 text-[16px] text-center text-[#FFFFFF]">Save Changes</AppText>
+                                    </View>
+                                </Pressable>
+                                <Pressable onPress={() => setSubjectState(0)}>
+                                    <View className="rounded-xl h-12 items-center justify-center">
+                                        <AppText className="font-lexend-5 text-[16px] text-center text-[#6B7280]">Cancel</AppText>
+                                    </View>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </View>
+                </GestureHandlerRootView>
+            </Modal>
             <GestureDetector gesture={swipeGesture}>
                 <Animated.View style={[{overflow: 'hidden', backgroundColor: '#FFFFFF', borderRadius: 12, display: "flex", flexDirection: 'column', borderWidth: 1, borderColor: '#F3F4F6', padding: 16, gap: 8}, animatedStyle3]}>
                     <View className="flex flex-row justify-between">
@@ -403,7 +647,7 @@ const ManageSubject = ({ subject, code, venue, prof, primaryColor, secondaryColo
                                 </View>
                             </View>
                             <View>
-                                <AppText className="font-lexend-7 text-primary-text text-lg">{subject}</AppText>
+                                <AppText className="font-lexend-7 text-primary-text text-lg">{name}</AppText>
                             </View>
                             <View>
                                 <AppText className="font-lexend-4 text-secondary-text text-[14px]">{prof}</AppText>
